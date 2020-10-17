@@ -33,7 +33,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'tg_bot'
+    'tg_bot',
+    'question_manager',
 ]
 
 MIDDLEWARE = [
