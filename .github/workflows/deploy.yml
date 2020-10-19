@@ -32,7 +32,7 @@ jobs:
           
           export $(cat En_group_bot/.env.example)
           
-          export TG_TOKEN=${{ secrets.DJANGO_SECRET_KEY }}
+          export SECRET_KEY='${{ secrets.DJANGO_SECRET_KEY }}'
           export TG_TOKEN=${{ secrets.TG_TOKEN }}
           
           set > En_group_bot/.env
