@@ -22,7 +22,10 @@ SECRET_KEY = env('SECRET_KEY')
 # False if not in os.environ
 DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = []
+if DEBUG:
+    ALLOWED_HOSTS = ['*']
+else:
+    ALLOWED_HOSTS = ['localhost']
 
 # Application definition
 
