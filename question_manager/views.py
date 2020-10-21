@@ -16,7 +16,11 @@ class CategoriesView(APIView):
 
     def get(self, request):
         """Получение всех категорий"""
-        level = request.data['level']
+        try:
+            level = request.data['level']
+        except KeyError:
+            return Response(status=400)
+
         categories = Categories.objects.filter(level=level)
         serializer = CategoriesSerializer(categories, many=True)
         return Response(serializer.data)
@@ -31,7 +35,17 @@ class CategoriesView(APIView):
 
     def put(self, request):
         """Изменение категории"""
-        pass
+        data = request.data
+        try:
+            category = Categories.objects.get(id=data['id'])
+        except Categories.DoesNotExist:
+            return Response(status=404)
+
+        serializer = CategoriesSerializer(category, data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status=201, data=serializer.data)
+        return Response(status=400)
 
     def delete(self, request):
         """Удаление категории"""
