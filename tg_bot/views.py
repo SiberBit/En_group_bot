@@ -1,11 +1,18 @@
+import telebot
+
 from django.shortcuts import render
-from En_group_bot.settings import TG_TOKEN
+from En_group_bot.settings import TG_TOKEN, DEBUG, HOST_URL
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 
-import telebot
+from time import sleep
 
 bot = telebot.TeleBot(TG_TOKEN, threaded=False)
+
+if not DEBUG and HOST_URL:
+    bot.remove_webhook()
+    sleep(1)
+    bot.set_webhook(url=f'{HOST_URL}/tg_bot/{TG_TOKEN}')
 
 
 @csrf_exempt

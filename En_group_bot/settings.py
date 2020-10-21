@@ -119,3 +119,4 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 TG_TOKEN = env('TG_TOKEN')
+HOST_URL = env('HOST_URL')
