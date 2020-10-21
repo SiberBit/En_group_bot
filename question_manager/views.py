@@ -48,5 +48,15 @@ class CategoriesView(APIView):
         return Response(status=400)
 
     def delete(self, request):
-        """Удаление категории"""
-        pass
+        data = request.data
+        try:
+            category = Categories.objects.get(id=data['id'])
+        except Categories.DoesNotExist:
+            return Response(status=404)
+        data = {}
+        operation = category.delete()
+        if operation:
+            data['success'] = 'delete successful'
+        else:
+            data['error'] = 'delete failed'
+        return Response(data=data)
