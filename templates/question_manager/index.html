@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    {% if DEBUG %}
+        <!-- версия для разработки, отображает полезные предупреждения в консоли -->
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    {% else %}
+        <!-- production-версия, оптимизированная для размера и скорости -->
+        <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    {% endif %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js"></script>
+</head>
+<body>
+{#Получение данных из Django и перенос их в js#}
+{{ categories|json_script:"djangoData" }}
+
+{#Говорим Django не пытаться рендерить этот код. Его будет рендерить vue.js#}
+{% verbatim %}
+<div class="container" id="app">
+
+    <p><a @click="get_start_categories" class="btn">В начало</a>/<a> {{ category.name }} </a></p>
+
+
+    <div class="row">
+        <div v-for="category in categories" style="padding: 10px">
+            <button type="button" @click="get_categories(category)" class="btn btn-success">{{ category.name }}</button>
+        </div>
+    </div>
+
+</div>
+
+
+</div>
+{% endverbatim %}
+
+
+<script src="{% static "question_manager/js/app.js" %}"></script>
+</body>
+</html>

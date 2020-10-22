@@ -4,29 +4,40 @@ from rest_framework.views import APIView
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 
+from En_group_bot.settings import DEBUG
 from question_manager.models import Categories
 from question_manager.serializers import CategoriesSerializer
 
 
 def index(request):
-    return HttpResponse('Hello from manager!')
+    categories = Categories.objects.filter(level=1)
+    serializer = CategoriesSerializer(categories, many=True)
+    data = {
+        'DEBUG': DEBUG,
+        'categories': serializer.data
+    }
+    return render(request, template_name='question_manager/index.html', context=data)
 
 
 class CategoriesView(APIView):
 
-    def get(self, request):
+    def get(self, request, id=None):
         """Получение всех категорий"""
-        try:
-            level = request.data['level']
-        except KeyError:
-            return Response(status=400)
-
-        categories = Categories.objects.filter(level=level)
+        print(request.data)
+        # try:
+        #     level = request.data['level']
+        # except KeyError:
+        #     return Response(status=400)
+        if id:
+            categories = Categories.objects.filter(parent_id=id)
+        else:
+            categories = Categories.objects.filter(level=1)
         serializer = CategoriesSerializer(categories, many=True)
         return Response(serializer.data)
 
     def post(self, request):
         """Создание категории"""
+        print(request.data)
         category = CategoriesSerializer(data=request.data)
         if category.is_valid():
             category.save()
