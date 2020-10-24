@@ -8,7 +8,7 @@ new Vue({
             categories_api: '/api/categories/',
         },
         categories: [],
-        category: {}
+        category: []
     },
     created: function () {
         this.categories = categories;
@@ -20,7 +20,14 @@ new Vue({
                 console.log(response.data);
                 categories = response.data;
                 this.categories = categories;
-                this.category = category
+
+                if (this.category[-1] != category){
+                    this.category.push(category)
+                }
+                else{
+                    this.category.pop()
+                }
+                console.log(this.category);
             });
         },
 
@@ -30,7 +37,7 @@ new Vue({
                 console.log(response.data);
                 categories = response.data;
                 this.categories = categories;
-                this.category = {};
+                this.category = [];
             });
         },
     }

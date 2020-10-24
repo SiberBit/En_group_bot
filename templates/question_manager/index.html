@@ -24,7 +24,8 @@
 {% verbatim %}
 <div class="container" id="app">
 
-    <p><a @click="get_start_categories" class="btn">В начало</a>/<a> {{ category.name }} </a></p>
+    <p><a class="btn" @click="get_start_categories" >В начало</a>/
+        <a class="btn" @click="get_categories(cat)" v-for="cat in category"> {{ cat.name }} /</a></p>
 
 
     <div class="row">
