@@ -23,3 +23,17 @@ class Questions(models.Model):
 
     def __str__(self):
         return self.question
+
+#Модель для организаций
+class Organizations(models.Model):
+    name = models.CharField(max_length=20)
+    slug = models.SlugField()
+
+
+#Модель для подразделений
+class Departments(models.Model):
+    name = models.CharField(max_length=20)
+    slug = models.SlugField()
+    visibility = models.BooleanField()
+    organization = models.ForeignKey(Organizations, on_delete=models.CASCADE)
+
