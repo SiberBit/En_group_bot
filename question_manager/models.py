@@ -37,3 +37,11 @@ class Departments(models.Model):
     visibility = models.BooleanField()
     organization = models.ForeignKey(Organizations, on_delete=models.CASCADE)
 
+#Модель для чат-бота
+class ChatBot(models.Model):
+    name = models.CharField(max_length=20)
+    platform = models.CharField(max_length=20)
+    link = models.URLField()
+    organization = models.ForeignKey(Organizations, on_delete=models.DO_NOTHING)
+    department = models.ForeignKey(Departments, on_delete=models.DO_NOTHING)
+    description = models.TextField(max_length=100)
