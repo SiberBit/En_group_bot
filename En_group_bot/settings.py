@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'tg_bot',
     'question_manager',
 ]
 
@@ -132,6 +131,3 @@ STATICFILES_DIRS = [
 ]
 
 LOGIN_REDIRECT_URL = 'home'
-
-TG_TOKEN = env('TG_TOKEN')
-HOST_URL = env('HOST_URL')
