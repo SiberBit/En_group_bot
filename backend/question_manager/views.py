@@ -19,6 +19,16 @@ def index(request):
     return render(request, template_name='question_manager/index.html', context=data)
 
 
+class CategoryView(APIView):
+    """Получение информации о категории по id"""
+
+    def get(self, request, id):
+        categories = Categories.objects.get(id=id)
+        serializer = CategoriesSerializer(categories)
+
+        return Response(serializer.data)
+
+
 class CategoriesView(APIView):
 
     def get(self, request, id=None):
@@ -51,8 +61,9 @@ class CategoriesView(APIView):
             category = Categories.objects.get(id=data['id'])
         except Categories.DoesNotExist:
             return Response(status=404)
-
+        print(data)
         serializer = CategoriesSerializer(category, data=data)
+        print(serializer)
         if serializer.is_valid():
             serializer.save()
             return Response(status=201, data=serializer.data)
