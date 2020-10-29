@@ -36,6 +36,8 @@ def handle_query(message):
         data = json.loads(data)
         category_id = data['category_id']
 
+        target = data['target']
+
         # Информация для кнопки назад
         if not category_id == '0':
             try:
@@ -51,19 +53,67 @@ def handle_query(message):
             parent_id = None
             category_name = ''
 
+        if target == 'categories':
+
+            try:
+                # получаем категории через API
+                categories = api.get_categories(category_id=category_id)
+            except Exception as e:
+                print(e)
+                return
+
+            try:
+                # Выводим сообщение со списком категорий
+                bot.edit_message_text(message_id=message_id, chat_id=chat_id, text=f'{category_name}'
+                                                                                   f'Выберите категорию',
+                                      reply_markup=cb.make_inline_keyboard_categories(categories=categories,
+                                                                                      last_category_id=parent_id))
+            except Exception as e:
+                print(e)
+                return
+
+        elif target == 'questions':
+
+            try:
+                # получаем вопросы через API
+                questions = api.get_questions(category_id=category_id)
+            except Exception as e:
+                print(e)
+                return
+            print(questions)
+            try:
+                # Выводим сообщение со списком вопросов
+                bot.edit_message_text(message_id=message_id, chat_id=chat_id, text=f'{category_name}'
+                                                                                   f'Выберите вопрос',
+                                      reply_markup=cb.make_inline_keyboard_questions(questions=questions,
+                                                                                     last_category_id=parent_id))
+            except Exception as e:
+                print(e)
+                return
+
+
+    elif 'question_id' in data:
+        data = json.loads(data)
+        question_id = data['question_id']
+        category_id = data['category']
+
         try:
-            # получаем категории через API
-            categories = api.get_categories(category_id=category_id)
+            question_info = api.get_question_info(question_id=question_id)
         except Exception as e:
             print(e)
             return
 
+        question = question_info['question']
+        answer = question_info['answer']
+
         try:
-            # Выводим сообщение со списком категорий
-            bot.edit_message_text(message_id=message_id, chat_id=chat_id, text=f'{category_name}'
-                                                                               f'Выберите категорию',
-                                  reply_markup=cb.make_inline_keyboard_categories(categories=categories,
-                                                                                  last_category_id=parent_id))
+            # Выводим сообщение со списком вопросов
+            bot.edit_message_text(message_id=message_id, chat_id=chat_id, text=f'<b>Вопрос:</b>\n'
+                                                                               f'{question}\n\n'
+                                                                               f'<b>Ответ:</b>\n'
+                                                                               f'{answer}',
+                                  reply_markup=cb.make_inline_keyboard_back_from_question(category_id=category_id),
+                                  parse_mode='HTML')
         except Exception as e:
             print(e)
             return
