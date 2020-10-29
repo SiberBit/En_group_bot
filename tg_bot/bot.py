@@ -1,13 +1,16 @@
 import telebot
 import os
 import json
-import requests
 
 import functions.creating_buttons as cb
+from functions.api import API
 
 TOKEN = os.environ.get('TG_TOKEN')
 API_URL = 'http://127.0.0.1:8000/api/'
+
 bot = telebot.TeleBot(TOKEN, threaded=False)
+
+api = API(api_url=API_URL)
 
 
 # ==================== Обработка команд ==================== #
@@ -16,36 +19,9 @@ bot = telebot.TeleBot(TOKEN, threaded=False)
 @bot.message_handler(commands=['start'])
 def start_message(message):
     chat_id = message.chat.id
-    categories = get_categories()
+    categories = api.get_categories()
     bot.send_message(chat_id=chat_id, text='Привет!\n',
                      reply_markup=cb.make_inline_keyboard_categories(categories=categories))
-
-
-def get_categories(category_id: int = None) -> list:
-    api_url = API_URL + 'categories/'
-    if category_id == '0':
-        category_id = None
-
-    response = requests.get(api_url + f'{category_id}/' if category_id else api_url)
-
-    # если ответ успешен, исключения задействованы не будут
-    response.raise_for_status()
-
-    categories = response.json()
-    return categories
-
-
-def get_category_info(category_id: int):
-    """Получение информации о категории по id"""
-    api_url = API_URL + 'category/'
-
-    response = requests.get(api_url + f'{category_id}/')
-
-    # если ответ успешен, исключения задействованы не будут
-    response.raise_for_status()
-
-    category = response.json()
-    return category
 
 
 # ==================== Обработка Inline кнопок ==================== #
@@ -54,7 +30,7 @@ def handle_query(message):
     chat_id = message.message.chat.id
     message_id = message.message.message_id
     data = message.data
-    print(data)
+    print('callback data: ', data)
 
     if 'category_id' in data:
         data = json.loads(data)
@@ -63,7 +39,7 @@ def handle_query(message):
         # Информация для кнопки назад
         if not category_id == '0':
             try:
-                category_info = get_category_info(category_id)
+                category_info = api.get_category_info(category_id)
             except Exception as e:
                 print(e)
                 return
@@ -76,7 +52,8 @@ def handle_query(message):
             category_name = ''
 
         try:
-            categories = get_categories(category_id=category_id)
+            # получаем категории через API
+            categories = api.get_categories(category_id=category_id)
         except Exception as e:
             print(e)
             return
