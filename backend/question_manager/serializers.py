@@ -1,13 +1,13 @@
 from rest_framework import serializers
 
-from question_manager.models import Categories, Questions
+from question_manager.models import Category, Question
 
 
 class CategoriesSerializer(serializers.ModelSerializer):
     """Категории"""
 
     class Meta:
-        model = Categories
+        model = Category
         fields = '__all__'
 
 
@@ -15,5 +15,5 @@ class QuestionsSerializer(serializers.ModelSerializer):
     """Вопросы"""
 
     class Meta:
-        model = Questions
+        model = Question
         fields = '__all__'

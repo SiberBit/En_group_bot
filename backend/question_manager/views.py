@@ -4,12 +4,12 @@ from rest_framework.views import APIView
 from django.shortcuts import render
 
 from En_group_bot.settings import DEBUG
-from question_manager.models import Categories, Questions
+from question_manager.models import Category, Question
 from question_manager.serializers import CategoriesSerializer, QuestionsSerializer
 
 
 def index(request):
-    categories = Categories.objects.filter(level=1)
+    categories = Category.objects.filter(level=1)
     serializer = CategoriesSerializer(categories, many=True)
     data = {
         'DEBUG': DEBUG,
@@ -22,7 +22,7 @@ class CategoryView(APIView):
 
     def get(self, request, id):
         """Получение информации о категории по id"""
-        categories = Categories.objects.get(id=id)
+        categories = Category.objects.get(id=id)
         serializer = CategoriesSerializer(categories)
 
         return Response(serializer.data)
@@ -33,9 +33,9 @@ class CategoriesView(APIView):
     def get(self, request, id=None):
         """Получение всех категорий"""
         if id:
-            categories = Categories.objects.filter(parent_id=id)
+            categories = Category.objects.filter(parent_id=id)
         else:
-            categories = Categories.objects.filter(level=1)
+            categories = Category.objects.filter(level=1)
         serializer = CategoriesSerializer(categories, many=True)
         return Response(serializer.data)
 
@@ -51,8 +51,8 @@ class CategoriesView(APIView):
         """Изменение категории"""
         data = request.data
         try:
-            category = Categories.objects.get(id=data['id'])
-        except Categories.DoesNotExist:
+            category = Category.objects.get(id=data['id'])
+        except Category.DoesNotExist:
             return Response(status=404)
         serializer = CategoriesSerializer(category, data=data)
         if serializer.is_valid():
@@ -63,8 +63,8 @@ class CategoriesView(APIView):
     def delete(self, request):
         data = request.data
         try:
-            category = Categories.objects.get(id=data['id'])
-        except Categories.DoesNotExist:
+            category = Category.objects.get(id=data['id'])
+        except Category.DoesNotExist:
             return Response(status=404)
         data = {}
         operation = category.delete()
@@ -79,7 +79,7 @@ class QuestionView(APIView):
 
     def get(self, request, id):
         """Получение информации о вопросе по id"""
-        question = Questions.objects.get(id=id)
+        question = Question.objects.get(id=id)
         serializer = QuestionsSerializer(question)
 
         return Response(serializer.data)
@@ -90,7 +90,7 @@ class QuestionsView(APIView):
     def get(self, request, category_id):
         """Получение всех категорий"""
 
-        questions = Questions.objects.filter(category_id=category_id)
+        questions = Question.objects.filter(category_id=category_id)
 
         serializer = QuestionsSerializer(questions, many=True)
         return Response(serializer.data)
@@ -107,8 +107,8 @@ class QuestionsView(APIView):
         """Изменение категории"""
         data = request.data
         try:
-            questions = Questions.objects.get(id=data['id'])
-        except Questions.DoesNotExist:
+            questions = Question.objects.get(id=data['id'])
+        except Question.DoesNotExist:
             return Response(status=404)
         serializer = QuestionsSerializer(questions, data=data)
         if serializer.is_valid():
@@ -119,8 +119,8 @@ class QuestionsView(APIView):
     def delete(self, request):
         data = request.data
         try:
-            questions = Questions.objects.get(id=data['id'])
-        except Questions.DoesNotExist:
+            questions = Question.objects.get(id=data['id'])
+        except Question.DoesNotExist:
             return Response(status=404)
         data = {}
         operation = questions.delete()
