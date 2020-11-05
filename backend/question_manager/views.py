@@ -7,6 +7,7 @@ from En_group_bot.settings import DEBUG
 from question_manager.models import Category, Question
 from question_manager.serializers import CategoriesSerializer, QuestionsSerializer
 
+from rest_framework.permissions import IsAuthenticated
 
 def index(request):
     categories = Category.objects.filter(level=1)
@@ -25,18 +26,6 @@ class CategoryView(APIView):
         categories = Category.objects.get(id=id)
         serializer = CategoriesSerializer(categories)
 
-        return Response(serializer.data)
-
-
-class CategoriesView(APIView):
-
-    def get(self, request, id=None):
-        """Получение всех категорий"""
-        if id:
-            categories = Category.objects.filter(parent_id=id)
-        else:
-            categories = Category.objects.filter(level=1)
-        serializer = CategoriesSerializer(categories, many=True)
         return Response(serializer.data)
 
     def post(self, request):
@@ -75,6 +64,19 @@ class CategoriesView(APIView):
         return Response(data=data)
 
 
+class CategoriesView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, id=None):
+        """Получение всех категорий"""
+        if id:
+            categories = Category.objects.filter(parent_id=id)
+        else:
+            categories = Category.objects.filter(level=1)
+        serializer = CategoriesSerializer(categories, many=True)
+        return Response(serializer.data)
+
+
 class QuestionView(APIView):
 
     def get(self, request, id):
@@ -82,17 +84,6 @@ class QuestionView(APIView):
         question = Question.objects.get(id=id)
         serializer = QuestionsSerializer(question)
 
-        return Response(serializer.data)
-
-
-class QuestionsView(APIView):
-
-    def get(self, request, category_id):
-        """Получение всех категорий"""
-
-        questions = Question.objects.filter(category_id=category_id)
-
-        serializer = QuestionsSerializer(questions, many=True)
         return Response(serializer.data)
 
     def post(self, request):
@@ -129,3 +120,14 @@ class QuestionsView(APIView):
         else:
             data['error'] = 'delete failed'
         return Response(data=data)
+
+
+class QuestionsView(APIView):
+
+    def get(self, request, category_id):
+        """Получение всех категорий"""
+
+        questions = Question.objects.filter(category_id=category_id)
+
+        serializer = QuestionsSerializer(questions, many=True)
+        return Response(serializer.data)

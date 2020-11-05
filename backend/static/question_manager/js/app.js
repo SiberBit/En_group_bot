@@ -5,7 +5,7 @@ new Vue({
     el: '#app',
     data: {
         url: {
-            categories_api: '/api/categories/',
+            categories_api: '/api/v1/categories/',
         },
         categories: [],
         category: []

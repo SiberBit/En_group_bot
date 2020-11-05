@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 # Модель для организаций
 class Organization(models.Model):
     """Организации"""
-    name = models.CharField('Название', max_length=64)
+    name = models.CharField('Название', max_length=64, unique=True)
     slug = models.SlugField(unique=True)
 
     class Meta:
