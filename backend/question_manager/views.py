@@ -5,9 +5,11 @@ from django.shortcuts import render
 
 from En_group_bot.settings import DEBUG
 from question_manager.models import Category, Question
+from question_manager.permissions import IsAuthorizedOrganization
 from question_manager.serializers import CategoriesSerializer, QuestionsSerializer
 
 from rest_framework.permissions import IsAuthenticated
+
 
 def index(request):
     categories = Category.objects.filter(level=1)
@@ -20,15 +22,21 @@ def index(request):
 
 
 class CategoryView(APIView):
+    permission_classes = [IsAuthenticated, IsAuthorizedOrganization]
 
-    def get(self, request, id):
+    def get(self, request, organization, department, pk):
         """Получение информации о категории по id"""
-        categories = Category.objects.get(id=id)
+        try:
+            categories = Category.objects.get(id=pk, department__slug=department,
+                                              department__organization__slug=organization)
+        except Category.DoesNotExist:
+            return Response(status=404)
+
         serializer = CategoriesSerializer(categories)
 
         return Response(serializer.data)
 
-    def post(self, request):
+    def post(self, request, **kwargs):
         """Создание категории"""
         category = CategoriesSerializer(data=request.data)
         if category.is_valid():
@@ -36,11 +44,12 @@ class CategoryView(APIView):
             return Response(status=201, data=category.data)
         return Response(status=400)
 
-    def put(self, request):
+    def put(self, request, organization, department):
         """Изменение категории"""
         data = request.data
         try:
-            category = Category.objects.get(id=data['id'])
+            category = Category.objects.get(id=data['id'], department__slug=department,
+                                            department__organization__slug=organization)
         except Category.DoesNotExist:
             return Response(status=404)
         serializer = CategoriesSerializer(category, data=data)
@@ -49,10 +58,11 @@ class CategoryView(APIView):
             return Response(status=201, data=serializer.data)
         return Response(status=400)
 
-    def delete(self, request):
+    def delete(self, request, organization, department):
         data = request.data
         try:
-            category = Category.objects.get(id=data['id'])
+            category = Category.objects.get(id=data['id'], department__slug=department,
+                                            department__organization__slug=organization)
         except Category.DoesNotExist:
             return Response(status=404)
         data = {}
@@ -65,28 +75,34 @@ class CategoryView(APIView):
 
 
 class CategoriesView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAuthorizedOrganization]
 
-    def get(self, request, id=None):
+    def get(self, request, organization, department, pk=None):
         """Получение всех категорий"""
-        if id:
-            categories = Category.objects.filter(parent_id=id)
+        if pk:
+            categories = Category.objects.filter(parent_id=pk, department__slug=department,
+                                                 department__organization__slug=organization)
         else:
-            categories = Category.objects.filter(level=1)
+            categories = Category.objects.filter(level=1, department__slug=department,
+                                                 department__organization__slug=organization)
         serializer = CategoriesSerializer(categories, many=True)
         return Response(serializer.data)
 
 
 class QuestionView(APIView):
 
-    def get(self, request, id):
+    def get(self, request, organization, department, pk):
         """Получение информации о вопросе по id"""
-        question = Question.objects.get(id=id)
+        try:
+            question = Question.objects.get(id=pk, category__department__slug=department,
+                                            category__department__organization__slug=organization)
+        except Question.DoesNotExist:
+            return Response(status=404)
         serializer = QuestionsSerializer(question)
 
         return Response(serializer.data)
 
-    def post(self, request):
+    def post(self, request, **kwargs):
         """Создание категории"""
         questions = QuestionsSerializer(data=request.data)
         if questions.is_valid():
@@ -94,11 +110,12 @@ class QuestionView(APIView):
             return Response(status=201, data=questions.data)
         return Response(status=400)
 
-    def put(self, request):
+    def put(self, request, organization, department):
         """Изменение категории"""
         data = request.data
         try:
-            questions = Question.objects.get(id=data['id'])
+            questions = Question.objects.get(id=data['id'], category__department__slug=department,
+                                             category__department__organization__slug=organization)
         except Question.DoesNotExist:
             return Response(status=404)
         serializer = QuestionsSerializer(questions, data=data)
@@ -107,10 +124,11 @@ class QuestionView(APIView):
             return Response(status=201, data=serializer.data)
         return Response(status=400)
 
-    def delete(self, request):
+    def delete(self, request, organization, department):
         data = request.data
         try:
-            questions = Question.objects.get(id=data['id'])
+            questions = Question.objects.get(id=data['id'], category__department__slug=department,
+                                             category__department__organization__slug=organization)
         except Question.DoesNotExist:
             return Response(status=404)
         data = {}
@@ -124,10 +142,10 @@ class QuestionView(APIView):
 
 class QuestionsView(APIView):
 
-    def get(self, request, category_id):
+    def get(self, request, category_id, organization, department):
         """Получение всех категорий"""
-
-        questions = Question.objects.filter(category_id=category_id)
+        questions = Question.objects.filter(category_id=category_id, category__department__slug=department,
+                                            category__department__organization__slug=organization)
 
         serializer = QuestionsSerializer(questions, many=True)
         return Response(serializer.data)

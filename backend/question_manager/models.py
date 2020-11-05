@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-# Модель для организаций
 class Organization(models.Model):
     """Организации"""
     name = models.CharField('Название', max_length=64, unique=True)
@@ -13,10 +12,9 @@ class Organization(models.Model):
         verbose_name_plural = 'Организации'
 
     def __str__(self):
-        return self.name
+        return f'id: {self.id} name: {self.name}'
 
 
-# Модель для подразделений
 class Department(models.Model):
     """Подразделения"""
     name = models.CharField('Название', max_length=64)
@@ -29,7 +27,7 @@ class Department(models.Model):
         verbose_name_plural = 'Подразделения'
 
     def __str__(self):
-        return self.name
+        return f'id: {self.id} name: {self.name}'
 
 
 class Category(models.Model):
@@ -50,7 +48,7 @@ class Category(models.Model):
         verbose_name_plural = 'Категории'
 
     def __str__(self):
-        return self.name
+        return f'id: {self.id} name: {self.name}'
 
 
 class Question(models.Model):
@@ -66,10 +64,9 @@ class Question(models.Model):
         verbose_name_plural = 'Вопросы'
 
     def __str__(self):
-        return self.question
+        return f'id: {self.id} question: {self.question}'
 
 
-# Модель для чат-бота
 class ChatBot(models.Model):
     """Чат боты"""
     name = models.CharField('Название', max_length=64)
@@ -84,4 +81,4 @@ class ChatBot(models.Model):
         verbose_name_plural = 'Чат боты'
 
     def __str__(self):
-        return self.name
+        return f'id: {self.id} name: {self.name}'
