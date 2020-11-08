@@ -1,24 +1,25 @@
-# frontend
+# Vuex Authentication
 
-## Project setup
-```
+> A simple example of authentication and access control in a [Vue](https://vuejs.org/) app with [Vuex](https://vuex.vuejs.org/).
+
+## Build Setup
+
+``` bash
+# install dependencies
 npm install
-```
 
-### Compiles and hot-reloads for development
-```
+# serve with hot reload at localhost:8080
 npm run serve
-```
 
-### Compiles and minifies for production
-```
+# build for production with minification
 npm run build
 ```
 
-### Lints and fixes files
-```
-npm run lint
-```
+## Server Setup
+To understand how to set up an authentication server, you can read [this article](https://scotch.io/tutorials/vue-authentication-and-route-handling-using-vue-router)
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## Built with
+- [Vue](https://vuejs.org/) - A progressive JavaScript framework
+- [Vue-router](https://router.vuejs.org/) - The official router for Vue.js
+- [Vuex](https://vuex.vuejs.org/) - The state manager for Vue.js
+- [Axios](https://github.com/axios/axios) - Promise based HTTP client for the browser and node.js

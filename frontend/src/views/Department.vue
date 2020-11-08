@@ -15,8 +15,9 @@
 
 <script>
 import axios from 'axios'
+
 export default {
-  name: "Categories",
+  name: "Department",
   data: function () {
     return {
       url: {
