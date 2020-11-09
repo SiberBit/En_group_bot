@@ -21,7 +21,7 @@ export default {
   data: function () {
     return {
       url: {
-        categories_api: 'http://127.0.0.1:8000/api/v1/categories/testovaya-organizaciya/testovoe-podrazdelen/',
+        categories_api: this.$store.state.api_url + 'categories/testovaya-organizaciya/testovoe-podrazdelen/',
       },
       categories: [],
       category: []
