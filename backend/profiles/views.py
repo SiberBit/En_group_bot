@@ -11,10 +11,8 @@ class UserView(APIView):
 
     def get(self, request):
         """Информация о пользователе"""
-        print(type(request.user))
+
         user = request.user
-        #serializer = ProfileSerializer(user)
         serializer = UserSerializer(user)
 
         return Response(serializer.data)
-        return Response("hi")
