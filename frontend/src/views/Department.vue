@@ -1,6 +1,6 @@
 <template>
 
-  <div class="container">
+  <div>
     <p><a class="btn" @click="get_start_categories">В начало</a>/
       <a class="btn" @click="get_categories(cat)" v-for="cat in category" v-bind:key=cat.id> {{ cat.name }} /</a></p>
 
