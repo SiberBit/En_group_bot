@@ -1,12 +1,13 @@
+from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from django.shortcuts import render
 
 from En_group_bot.settings import DEBUG
-from question_manager.models import Category, Question
-from question_manager.permissions import IsAuthorizedOrganization
-from question_manager.serializers import CategoriesSerializer, QuestionsSerializer
+from question_manager.models import Category, Question, Organization
+from question_manager.permissions import IsAuthorizedOrganization, IsAdminUserOrReadOnly
+from question_manager.serializers import CategoriesSerializer, QuestionsSerializer, OrganizationSerializer
 
 from rest_framework.permissions import IsAuthenticated
 
@@ -19,6 +20,25 @@ def index(request):
         'categories': serializer.data
     }
     return render(request, template_name='question_manager/index.html', context=data)
+
+
+class OrganizationViewSet(viewsets.ModelViewSet):
+    """Организации"""
+    permission_classes = [IsAdminUserOrReadOnly]
+    queryset = Organization.objects.all()
+    serializer_class = OrganizationSerializer
+
+
+class UserOrganizationsView(APIView):
+    """Организации пользователя"""
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        """"""
+        organizations = request.user.profile.organization.all()
+        serializer = OrganizationSerializer(organizations, many=True)
+
+        return Response(serializer.data)
 
 
 class CategoryView(APIView):
