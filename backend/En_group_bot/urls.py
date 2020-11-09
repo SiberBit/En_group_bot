@@ -16,5 +16,7 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view()),
     path('api/token/verify/', TokenVerifyView.as_view()),
 
+    path('user/', include('profiles.urls')),
+
     path('', index, name='home')
 ]
