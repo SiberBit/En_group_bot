@@ -5,11 +5,12 @@ from rest_framework.views import APIView
 from django.shortcuts import render
 
 from En_group_bot.settings import DEBUG
-from question_manager.models import Category, Question, Organization
-from question_manager.permissions import IsAuthorizedOrganization, IsAdminUserOrReadOnly
-from question_manager.serializers import CategoriesSerializer, QuestionsSerializer, OrganizationSerializer
+from question_manager.models import Category, Question, Organization, Department
+from question_manager.permissions import IsAuthorizedOrganization
+from question_manager.serializers import CategoriesSerializer, QuestionsSerializer, OrganizationSerializer, \
+    DepartmentSerializer
 
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 
 def index(request):
@@ -24,19 +25,37 @@ def index(request):
 
 class OrganizationViewSet(viewsets.ModelViewSet):
     """Организации"""
-    permission_classes = [IsAdminUserOrReadOnly]
+    permission_classes = [IsAdminUser]
     queryset = Organization.objects.all()
     serializer_class = OrganizationSerializer
 
 
 class UserOrganizationsView(APIView):
-    """Организации пользователя"""
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        """"""
+        """Организации пользователя"""
         organizations = request.user.profile.organization.all()
         serializer = OrganizationSerializer(organizations, many=True)
+
+        return Response(serializer.data)
+
+
+class DepartmentViewSet(viewsets.ModelViewSet):
+    """Подразделения"""
+    permission_classes = [IsAdminUser]
+    queryset = Department.objects.all()
+    serializer_class = DepartmentSerializer
+
+
+class OrganizationsDepartmentsView(APIView):
+    permission_classes = [IsAuthenticated, IsAuthorizedOrganization]
+
+    def get(self, request, organization: str):
+        """Подразделения организации"""
+
+        departments = Department.objects.filter(organization__slug=organization)
+        serializer = DepartmentSerializer(departments, many=True)
 
         return Response(serializer.data)
 

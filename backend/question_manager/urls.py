@@ -2,14 +2,18 @@ from django.urls import path, include
 from rest_framework import routers
 
 from question_manager import views
-from question_manager.views import OrganizationViewSet
+from question_manager.views import OrganizationViewSet, DepartmentViewSet
 
 router = routers.DefaultRouter()
 router.register(r'organization', OrganizationViewSet)
+router.register(r'department', DepartmentViewSet)
 
 urlpatterns = [
-    path("organizations/", views.UserOrganizationsView.as_view()),
     path('', include(router.urls)),
+
+    path("user-organizations/", views.UserOrganizationsView.as_view()),
+
+    path("departments/<str:organization>/", views.OrganizationsDepartmentsView.as_view()),
 
     path("categories/<str:organization>/<str:department>/<int:pk>/", views.CategoriesView.as_view()),
     path("categories/<str:organization>/<str:department>/", views.CategoriesView.as_view()),
