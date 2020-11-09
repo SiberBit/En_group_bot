@@ -22,10 +22,10 @@
 
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
-          <b-nav-item-dropdown text="Оргинизация 1" right>
-            <b-dropdown-item >Оргинизация 1</b-dropdown-item>
-            <b-dropdown-item >Оргинизация 2</b-dropdown-item>
-            <b-dropdown-item >Оргинизация 3</b-dropdown-item>
+          <b-nav-item-dropdown text="Организация 1" right>
+            <b-dropdown-item >Организация 1</b-dropdown-item>
+            <b-dropdown-item >Организация 2</b-dropdown-item>
+            <b-dropdown-item >Организация 3</b-dropdown-item>
 
           </b-nav-item-dropdown>
           <b-nav-form>
