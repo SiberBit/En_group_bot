@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+import createPersistedState from "vuex-persistedstate";
 
 Vue.use(Vuex)
 
@@ -16,21 +17,17 @@ export default new Vuex.Store({
         api_url: host_url + 'api/v1/',
         user_url: host_url + 'user/',
     },
+    plugins: [createPersistedState()],
     mutations: {
         auth_request(state) {
             state.status = 'loading'
         },
-        auth_success(state, token) {
+        auth_success(state,   {token, user}) {
             state.status = 'success'
             state.token = token
-            axios.get(host_url + 'user/').then((response) => {
-                console.log(response.data);
-                state.user = response.data
-            }).catch(err => {
-                state.status = 'error'
-                localStorage.removeItem('token')
-                reject(err)
-            })
+
+            console.log(user)
+            state.user = user
         },
         auth_error(state) {
             state.status = 'error'
@@ -38,6 +35,7 @@ export default new Vuex.Store({
         logout(state) {
             state.status = ''
             state.token = ''
+            state.user = {}
         },
     },
     actions: {
@@ -50,7 +48,10 @@ export default new Vuex.Store({
                         localStorage.setItem('token', token)
                         // Add the following line:
                         axios.defaults.headers.common['Authorization'] = token // проставляем в заголовок токен для всех запросов
-                        commit('auth_success', token)
+                        const user = resp.data.user
+                        localStorage.setItem('user', user)
+
+                        commit('auth_success',  {token, user})
                         resolve(resp)
                     })
                     .catch(err => {
@@ -74,5 +75,9 @@ export default new Vuex.Store({
             isLoggedIn: state => !!state.token,
             authStatus:
                 state => state.status,
-        }
+            user: state => {
+                return state.user
+            },
+        },
+
 })
