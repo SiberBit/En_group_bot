@@ -2,7 +2,12 @@
 
   <div class="row">
     <div v-for="department in departments" v-bind:key=department.id style="padding: 10px">
-      <button type="button" class="btn btn-success">{{ department.name }}</button>
+      <!--      <button type="button" class="btn btn-success">{{ department.name }}</button>-->
+
+      <router-link to="/categories/">
+        <div @click="set_department(department)">{{ department.name }}</div>
+      </router-link>
+
     </div>
   </div>
 </template>
@@ -18,7 +23,8 @@ export default {
       get() {
         return this.$store.getters.organization
       },
-    }
+    },
+
   },
   data: function () {
     return {
@@ -31,6 +37,7 @@ export default {
   created: function () {
     this.get_departments()
 
+
   },
 
   methods: {
@@ -40,6 +47,9 @@ export default {
         const departments = response.data;
         this.departments = departments;
       });
+    },
+    set_department(department) {
+      this.$store.commit('set_department', department)
     }
   },
 

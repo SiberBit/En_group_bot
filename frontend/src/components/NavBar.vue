@@ -52,7 +52,6 @@
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
-    <span>Выбрано: {{ organization }}</span>
   </div>
 
 

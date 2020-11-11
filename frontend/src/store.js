@@ -16,7 +16,8 @@ export default new Vuex.Store({
         auth_url: host_url + 'api/token/',
         api_url: host_url + 'api/v1/',
         user_url: host_url + 'user/',
-        organization: {}
+        organization: {},
+        department: {}
     },
     plugins: [createPersistedState()],
     mutations: {
@@ -37,8 +38,11 @@ export default new Vuex.Store({
             state.token = ''
             state.user = {}
         },
-        set_organization(state, organization){
+        set_organization(state, organization) {
             state.organization = organization
+        },
+        set_department(state, department) {
+            state.department = department
         }
     },
     actions: {
@@ -83,7 +87,9 @@ export default new Vuex.Store({
             },
             organization: state => {
                 return state.organization
-
+            },
+            department: state => {
+                return state.department
             },
         },
 

@@ -5,6 +5,7 @@ import Home from './views/Home.vue'
 import About from './views/About.vue'
 import Login from './components/Login.vue'
 import Department from "@/views/Department";
+import Categories from "@/views/Categories";
 
 
 Vue.use(Router)
@@ -34,9 +35,9 @@ let router = new Router({
         },
 
         {
-            path: '/about',
-            name: 'about',
-            component: About,
+            path: '/categories',
+            name: 'categories',
+            component: Categories,
             meta: {
                 requiresAuth: true
             }
