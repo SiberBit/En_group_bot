@@ -1,14 +1,13 @@
 <template>
 
-  <div class="container">
-    <p><a class="btn" @click="get_start_categories">В начало</a>/
-      <a class="btn" @click="get_categories(cat)" v-for="cat in category" v-bind:key=cat.id> {{ cat.name }} /</a></p>
+  <div class="row">
+    <div v-for="department in departments" v-bind:key=department.id style="padding: 10px">
+      <!--      <button type="button" class="btn btn-success">{{ department.name }}</button>-->
 
+      <router-link to="/categories/">
+        <div @click="set_department(department)">{{ department.name }}</div>
+      </router-link>
 
-    <div class="row">
-      <div v-for="category in categories" v-bind:key=category.id style="padding: 10px">
-        <button type="button" @click="get_categories(category)" class="btn btn-success">{{ category.name }}</button>
-      </div>
     </div>
   </div>
 </template>
@@ -16,46 +15,49 @@
 <script>
 import axios from 'axios'
 
+
 export default {
   name: "Department",
+  computed: {
+    organization: {
+      get() {
+        return this.$store.getters.organization
+      },
+    },
+
+  },
   data: function () {
     return {
       url: {
-        categories_api: 'http://127.0.0.1:8000/api/v1/categories/testovaya-organizaciya/testovoe-podrazdelen/',
+        department_api: this.$store.state.api_url + 'departments/',
       },
-      categories: [],
-      category: []
+      departments: [],
     }
   },
   created: function () {
-    // this.categories = categories;
-    this.get_start_categories();
+    this.get_departments()
+
+
   },
+
   methods: {
-    get_categories(category) {
-      // получаем подкатегории
-      axios.get(this.url.categories_api + category.id + '/').then((response) => {
+    get_departments() {
+      axios.get(this.url.department_api + this.organization.slug + '/').then((response) => {
         console.log(response.data);
-        const categories = response.data;
-        this.categories = categories;
-        if (this.category[-1] != category) {
-          this.category.push(category)
-        } else {
-          this.category.pop()
-        }
-        console.log(this.category);
+        const departments = response.data;
+        this.departments = departments;
       });
     },
-    get_start_categories() {
-      // получаем начальные категории
-      axios.get(this.url.categories_api).then((response) => {
-        console.log(response.data);
-        const categories = response.data;
-        this.categories = categories;
-        this.category = [];
-      });
-    },
-  }
+    set_department(department) {
+      this.$store.commit('set_department', department)
+    }
+  },
+
+  watch: {
+    organization: function () {
+      this.get_departments()
+    }
+  },
 }
 </script>
 
