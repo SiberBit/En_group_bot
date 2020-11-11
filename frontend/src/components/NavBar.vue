@@ -28,12 +28,12 @@
           <!--            <b-dropdown-item>Организация 3</b-dropdown-item>-->
 
           <!--          </b-nav-item-dropdown>-->
-          <select v-model="selected">
-            <option v-for="option in options" v-bind:value="option.value">
-              {{ option.text }}
+
+          <select v-model="organization">
+            <option v-for="org in organizations" v-bind:value="org">
+              {{ org.name }}
             </option>
           </select>
-          <span>Выбрано: {{ selected }}</span>
 
           <b-nav-form>
             <b-form-input size="sm" class="mr-sm-2" placeholder="Search"></b-form-input>
@@ -52,6 +52,7 @@
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
+    <span>Выбрано: {{ organization }}</span>
   </div>
 
 
@@ -64,16 +65,22 @@ export default {
   computed: {
     user() {
       return this.$store.getters.user
+    },
+    organizations() {
+      return this.$store.getters.user.profile.organization
+    },
+    organization: {
+      get() {
+        return this.$store.getters.organization
+      },
+      set(organization) {
+        this.$store.commit('set_organization', organization)
+      }
     }
   },
+
   data: function () {
     return {
-      selected: 'А',
-      options: [
-        {text: 'Один', value: 'А'},
-        {text: 'Два', value: 'Б'},
-        {text: 'Три', value: 'В'}
-      ]
     }
   },
   methods: {

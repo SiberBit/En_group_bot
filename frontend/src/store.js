@@ -16,18 +16,18 @@ export default new Vuex.Store({
         auth_url: host_url + 'api/token/',
         api_url: host_url + 'api/v1/',
         user_url: host_url + 'user/',
+        organization: {}
     },
     plugins: [createPersistedState()],
     mutations: {
         auth_request(state) {
             state.status = 'loading'
         },
-        auth_success(state,   {token, user}) {
+        auth_success(state, {token, user}) {
             state.status = 'success'
             state.token = token
-
-            console.log(user)
             state.user = user
+            state.organization = user.profile.organization[0]
         },
         auth_error(state) {
             state.status = 'error'
@@ -37,6 +37,9 @@ export default new Vuex.Store({
             state.token = ''
             state.user = {}
         },
+        set_organization(state, organization){
+            state.organization = organization
+        }
     },
     actions: {
         login({commit}, user) {
@@ -51,7 +54,7 @@ export default new Vuex.Store({
                         const user = resp.data.user
                         localStorage.setItem('user', user)
 
-                        commit('auth_success',  {token, user})
+                        commit('auth_success', {token, user})
                         resolve(resp)
                     })
                     .catch(err => {
@@ -77,6 +80,10 @@ export default new Vuex.Store({
                 state => state.status,
             user: state => {
                 return state.user
+            },
+            organization: state => {
+                return state.organization
+
             },
         },
 
