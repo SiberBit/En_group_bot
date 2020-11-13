@@ -1,35 +1,46 @@
 <template>
   <div>
+    <h1>Подразделения</h1>
     <div v-if="status==='loading'" class="loading">
       <Loading/>
     </div>
 
     <div v-else-if="status==='success'">
-      <b-card v-for="department in departments" v-bind:key=department.id
-              style="padding: 10px">
-        <router-link to="/categories/">
-          <h4 @click="set_department(department)">{{ department.name }}</h4>
-        </router-link>
-        <div>
-          Использование:
-          <p v-if="department.visibility">Для клиентов</p>
-          <p v-else>Внутри организации</p>
-        </div>
-        <!--Информация о чат боте-->
-        <div class="row">
-          <div class="col-md-10">
-            <a href="">(Информация о боте)</a>
-          </div>
-          <div class="col-md-2">
-            <b-button style="padding: 0" @click="edit_department(department)" variant="outline-primary">
-              <div style="padding: 6px 12px; outline: none;" v-b-modal.modal-prevent-closing>
-                Редактировать
-              </div>
-            </b-button>
-          </div>
-        </div>
 
-      </b-card>
+      <b-button style="padding: 0" @click="add_department()" variant="outline-primary">
+        <div style="padding: 6px 12px; outline: none;" v-b-modal.modal-prevent-closing>
+          Добавить подразделение
+        </div>
+      </b-button>
+
+
+      <div class="department-list">
+        <b-card v-for="department in departments" v-bind:key=department.id
+                style="padding: 10px">
+          <router-link to="/categories/">
+            <h4 @click="set_department(department)">{{ department.name }}</h4>
+          </router-link>
+          <div>
+            Использование:
+            <p v-if="department.visibility">Для клиентов</p>
+            <p v-else>Внутри организации</p>
+          </div>
+          <!--Информация о чат боте-->
+          <div class="row">
+            <div class="col-md-10">
+              <a href="">(Информация о боте)</a>
+            </div>
+            <div class="col-md-2">
+              <b-button style="padding: 0" @click="edit_department(department)" variant="outline-primary">
+                <div style="padding: 6px 12px; outline: none;" v-b-modal.modal-prevent-closing>
+                  Редактировать
+                </div>
+              </b-button>
+            </div>
+          </div>
+
+        </b-card>
+      </div>
 
       <!--Модальное окно редактирования-->
       <b-modal
@@ -69,6 +80,8 @@
                               {value:false, text:'Внутри организации'},
                               {value:true, text:'Для клиентов'}
                             ]"
+
+
                   required
               ></b-form-select>
             </b-form-group>
@@ -111,6 +124,7 @@ export default {
       },
       departments: [],
 
+      form_action: '',
       _editable_department: {},
       validState: null,
 
@@ -139,7 +153,16 @@ export default {
 
     edit_department(department) {
       // сохранение редактируемого подразделения
+
+      this.form_action = 'edit'
       this.$data._editable_department = department
+    },
+
+    add_department() {
+      // добавление нового подразделения
+
+      this.form_action = 'add'
+
     },
 
     checkFormValidity() {
@@ -154,6 +177,7 @@ export default {
       // сброс формы
       this.$data._editable_department = {}
       this.validState = null
+      this.form_action = ''
     },
 
     handleCancel() {
@@ -173,14 +197,8 @@ export default {
       // Trigger submit handler
       this.handleSubmit()
     },
-    handleSubmit() {
-      //отправка формы
 
-      // Exit when the form isn't valid
-      if (!this.checkFormValidity()) {
-        return
-      }
-
+    sendDataEdit() {
       // отправляем данные на сервер
       let data = this.$data._editable_department
       const id = this.$data._editable_department.id
@@ -189,14 +207,39 @@ export default {
       delete data["id"]
       axios.put(this.url.edit_department_api + id + '/', data).then((response) => {
         console.log(response.data);
-        this.status = "loading"
-
-        //загружаем актуальную информацию
-        this.get_departments()
-
       }).catch((error) => {
         console.log(error);
       });
+    },
+
+    sendDataAdd(){
+      let data = this.$data._editable_department
+      const slug = Slug(this.$data._editable_department.name)
+      data["slug"] = slug
+      data["organization"] = this.organization.id
+
+      axios.post(this.url.edit_department_api, data).then((response) => {
+        console.log(response.data);
+      }).catch((error) => {
+        console.log(error);
+      });
+    },
+
+    handleSubmit() {
+      //отправка формы
+
+      // Exit when the form isn't valid
+      if (!this.checkFormValidity()) {
+        return
+      }
+
+      if (this.form_action === 'edit') {
+        this.sendDataEdit()
+      }
+      else if(this.form_action === 'add')
+      {
+        this.sendDataAdd()
+      }
 
 
       // Скрываем модальное окно
@@ -217,4 +260,7 @@ export default {
 </script>
 
 <style scoped>
+.department-list {
+  padding-top: 20px;
+}
 </style>
