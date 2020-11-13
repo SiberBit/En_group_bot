@@ -17,12 +17,12 @@
       <div class="row">
 
         <div v-for="category in categories" v-bind:key=category.id style="padding: 5px">
-          <b-button variant="success" >
+          <b-button variant="success">
             <div class="row" style="margin: 0 5px; ">
               <div style="padding-right: 10px" @click="get_categories(category)">
                 {{ category.name }}
               </div>
-              <div title = "Редактировать" style="" @click="edit_category(category)" variant="outline-primary">
+              <div title="Редактировать" style="" @click="edit_category(category)" variant="outline-primary">
                 <div style="outline: none;" v-b-modal.modal-prevent-closing>
                   <img style="height: 20px" src="../assets/text_edit.png">
                 </div>
@@ -181,6 +181,11 @@ export default {
       this.form_name = 'Добавление категории'
       this.form_action = 'add'
     },
+    edit_category(category) {
+      this.form_name = 'Редактирование'
+      this.form_action = 'edit'
+      this.$data._editable_category = category
+    },
 
     checkFormValidity() {
       // проверка валидности формы
@@ -212,17 +217,15 @@ export default {
     },
 
     sendDataEdit() {
-      // отправляем данные на сервер
-      // let data = this.$data._editable_category
-      // const id = this.$data._editable_category.id
-      // const slug = Slug(this.$data._editable_category.name)
-      // data["slug"] = slug
-      // delete data["id"]
-      // axios.put(this.url.edit_department_api + id + '/', data).then((response) => {
-      //   console.log(response.data);
-      // }).catch((error) => {
-      //   console.log(error);
-      // });
+      //отправляем данные на сервер
+      let data = this.$data._editable_category
+      const id = this.$data._editable_category.id
+      delete data["id"]
+      axios.put(this.url.edit_category_api + this.organization.slug + '/' + this.department.slug + '/' + id + '/', data).then((response) => {
+        console.log(response.data);
+      }).catch((error) => {
+        console.log(error);
+      });
     },
     sendDataAdd() {
       let data = this.$data._editable_category
