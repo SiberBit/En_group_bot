@@ -20,13 +20,18 @@
           <b-button variant="success" @click="get_categories(category)">{{ category.name }}</b-button>
         </div>
 
+        <!--Кнопка Добавить категорию-->
 
-        <div style="padding: 5px">
+        <div v-if="!category || category.target==='categories'" style="padding: 5px">
           <b-button style="padding: 0" @click="add_category()" variant="outline-success">
             <div style="padding: 6px 12px; outline: none;" v-b-modal.modal-prevent-closing>
               <img style="height: 20px" src="../assets/plus.svg">
             </div>
           </b-button>
+        </div>
+
+        <div v-else>
+          <Questions/>
         </div>
 
 
@@ -90,11 +95,13 @@
 <script>
 import axios from 'axios'
 import Loading from "@/components/Loading";
+import Questions from "@/components/Questions";
 
 export default {
   name: "Categories",
   components: {
-    Loading
+    Loading,
+    Questions
   },
   data: function () {
     return {
@@ -249,7 +256,7 @@ export default {
       })
     }
   },
-    watch: {
+  watch: {
     organization: function () {
       this.$router.push('/department')
     }
