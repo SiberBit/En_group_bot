@@ -141,7 +141,7 @@ export default {
       axios.get(this.url.department_api + this.organization.slug + '/').then((response) => {
         console.log(response.data);
         const departments = response.data;
-        this.departments = departments;
+        this.departments = departments.reverse();
         this.status = "success"
       });
     },
