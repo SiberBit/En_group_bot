@@ -19,6 +19,9 @@ if (token) {
 
 Vue.config.productionTip = false
 
+window.Slug = require("slug")
+Slug.defaults.mode = "rfc3986"
+
 new Vue({
     router,
     store,
