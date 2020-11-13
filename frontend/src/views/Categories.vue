@@ -248,9 +248,12 @@ export default {
         this.$bvModal.hide('modal-prevent-closing')
       })
     }
-
-
-  }
+  },
+    watch: {
+    organization: function () {
+      this.$router.push('/department')
+    }
+  },
 }
 </script>
 
