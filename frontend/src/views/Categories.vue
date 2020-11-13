@@ -17,7 +17,18 @@
       <div class="row">
 
         <div v-for="category in categories" v-bind:key=category.id style="padding: 5px">
-          <b-button variant="success" @click="get_categories(category)">{{ category.name }}</b-button>
+          <b-button variant="success" >
+            <div class="row" style="margin: 0 5px; ">
+              <div style="padding-right: 10px" @click="get_categories(category)">
+                {{ category.name }}
+              </div>
+              <div title = "Редактировать" style="" @click="edit_category(category)" variant="outline-primary">
+                <div style="outline: none;" v-b-modal.modal-prevent-closing>
+                  <img style="height: 20px" src="../assets/text_edit.png">
+                </div>
+              </div>
+            </div>
+          </b-button>
         </div>
 
         <!--Кнопка Добавить категорию-->
