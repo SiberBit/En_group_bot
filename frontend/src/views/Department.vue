@@ -178,6 +178,7 @@ export default {
       this.$data._editable_department = {}
       this.validState = null
       this.form_action = ''
+      this.form_name = ''
     },
 
     handleCancel() {
