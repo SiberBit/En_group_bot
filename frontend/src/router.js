@@ -2,11 +2,10 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import store from './store.js'
 import Home from './views/Home.vue'
-import About from './views/About.vue'
 import Login from './components/Login.vue'
 import Department from "@/views/Department";
 import Categories from "@/views/Categories";
-
+import axios from 'axios'
 
 Vue.use(Router)
 
@@ -42,7 +41,7 @@ let router = new Router({
                 requiresAuth: true
             }
         },
-                {
+        {
             path: '/department',
             name: 'Department',
             component: Department,
@@ -53,6 +52,25 @@ let router = new Router({
 
     ]
 })
+
+// проверка жадого ответа на вторизацию
+axios.interceptors.response.use(
+    // Обработчик для успешного случая; просто пропускаем ответ дальше
+    res => {
+        return res;
+    },
+    // Обработчик для ошибки
+    error => {
+        if (error.response.status === 401) {
+            store.dispatch('logout')
+                .then(() => {
+                    router.push('/login')
+                })
+        }
+        return Promise.reject(error);
+    }
+);
+
 
 router.beforeEach((to, from, next) => {
     if (to.matched.some(record => record.meta.requiresAuth)) {

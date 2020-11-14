@@ -46,7 +46,7 @@
       <b-modal
           id="modal-prevent-closing"
           ref="modal"
-          title="Редактирование"
+          :title="form_name"
           @show="resetModal"
           @hidden="handleCancel"
           @ok="handleOk"
@@ -125,6 +125,7 @@ export default {
       departments: [],
 
       form_action: '',
+      form_name: '',
       _editable_department: {},
       validState: null,
 
@@ -153,14 +154,14 @@ export default {
 
     edit_department(department) {
       // сохранение редактируемого подразделения
-
+      this.form_name = 'Редактирование'
       this.form_action = 'edit'
       this.$data._editable_department = department
     },
 
     add_department() {
       // добавление нового подразделения
-
+      this.form_name = 'Добавление нового подразделения'
       this.form_action = 'add'
 
     },
@@ -168,7 +169,6 @@ export default {
     checkFormValidity() {
       // проверка валидности формы
       const valid = this.$refs.form.checkValidity()
-      console.log(valid)
       this.validState = valid
       return valid
     },
@@ -178,6 +178,7 @@ export default {
       this.$data._editable_department = {}
       this.validState = null
       this.form_action = ''
+      this.form_name = ''
     },
 
     handleCancel() {

@@ -83,11 +83,11 @@ class CategoryView(APIView):
             return Response(status=201, data=category.data)
         return Response(status=400)
 
-    def put(self, request, organization, department):
+    def put(self, request, organization, department, pk):
         """Изменение категории"""
         data = request.data
         try:
-            category = Category.objects.get(id=data['id'], department__slug=department,
+            category = Category.objects.get(id=pk, department__slug=department,
                                             department__organization__slug=organization)
         except Category.DoesNotExist:
             return Response(status=404)
