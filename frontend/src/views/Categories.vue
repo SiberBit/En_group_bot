@@ -10,8 +10,31 @@
 
     <div v-else-if="status==='success'">
 
-      <p><a class="btn" @click="get_start_categories">В начало</a>/
-      </p>
+
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item" aria-current="page" @click="get_start_categories">
+            <a v-if="category_menu.length!==0" href="#">
+              В начало
+            </a>
+            <a v-else>
+              В начало
+            </a>
+          </li>
+          <li v-for="category in category_menu"
+              v-bind:key=category.id
+              @click="get_categories(category)"
+              class="breadcrumb-item "
+          >
+            <a v-if="category !== category_menu[category_menu.length-1]" href="#">
+              {{ category.name }}
+            </a>
+            <a v-else>
+              {{ category.name }}
+            </a>
+          </li>
+        </ol>
+      </nav>
 
 
       <div class="row">
@@ -33,8 +56,8 @@
 
         <!--Кнопка Добавить категорию-->
 
-        <div v-if="!category || category.target==='categories'" style="padding: 5px">
-          <b-button style="padding: 0" @click="add_category()" variant="outline-success">
+        <div v-if="!parent_category || parent_category.target==='categories'" style="padding: 5px">
+          <b-button title="Добавить категорию" style="padding: 0" @click="add_category()" variant="outline-success">
             <div style="padding: 6px 12px; outline: none;" v-b-modal.modal-prevent-closing>
               <img style="height: 20px" src="../assets/plus.svg">
             </div>
@@ -122,12 +145,14 @@ export default {
         edit_category_api: this.$store.state.api_url + 'category/',
       },
       categories: [],
-      category: null,
+      parent_category: null,
 
       form_action: '',
       form_name: '',
       _editable_category: {},
       validState: null,
+
+      category_menu: [],
     }
   },
 
@@ -145,6 +170,7 @@ export default {
   },
 
   created: function () {
+
     this.get_start_categories();
   },
   methods: {
@@ -156,7 +182,15 @@ export default {
 
         // получаем подкатегории
         this.status = "loading"
-        this.category = category
+
+        this.parent_category = category
+
+        //Смотрим есть ли категория в меню
+        if (this.category_menu.indexOf(category) !== -1) {
+          this.category_menu.length = category.level - 1 // если есть, убираем категории стоящие выше по дереву
+        }
+        this.category_menu.push(category)// добавляем категорию в меню
+
         axios.get(this.url.categories_api + this.organization.slug + '/' + this.department.slug + '/' + category.id + '/').then((response) => {
           console.log(response.data);
           const categories = response.data;
@@ -165,14 +199,16 @@ export default {
         });
       }
     },
-    get_start_categories() {
-      // получаем начальные категории
+    get_start_categories() { // получаем начальные категории
+
+      this.category_menu = []
+
       this.status = "loading"
       axios.get(this.url.categories_api + this.organization.slug + '/' + this.department.slug + '/').then((response) => {
         console.log(response.data);
         const categories = response.data;
         this.categories = categories;
-        this.category = null;
+        this.parent_category = null;
         this.status = "success"
       });
     },
@@ -204,7 +240,7 @@ export default {
       // при закрытии формы
       this.status = "loading"
       //загружаем актуальную информацию
-      this.get_categories(this.category)
+      this.get_categories(this.parent_category)
       this.resetModal()
     },
     handleOk(bvModalEvt) {
@@ -230,12 +266,10 @@ export default {
     sendDataAdd() {
       let data = this.$data._editable_category
 
-      console.log('Sending')
-      console.log(this.category)
 
-      if (this.category) {
-        data["level"] = this.category.level + 1
-        data["parent_id"] = this.category.id
+      if (this.parent_category) {
+        data["level"] = this.parent_category.level + 1
+        data["parent_id"] = this.parent_category.id
       } else {
         data["level"] = 1
         data["parent_id"] = 0
