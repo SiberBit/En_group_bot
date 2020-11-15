@@ -144,16 +144,17 @@ class QuestionView(APIView):
     def post(self, request, **kwargs):
         """Создание категории"""
         questions = QuestionsSerializer(data=request.data)
+        print(questions)
         if questions.is_valid():
             questions.save()
             return Response(status=201, data=questions.data)
         return Response(status=400)
 
-    def put(self, request, organization, department):
+    def put(self, request, organization, department, pk):
         """Изменение категории"""
         data = request.data
         try:
-            questions = Question.objects.get(id=data['id'], category__department__slug=department,
+            questions = Question.objects.get(id=pk, category__department__slug=department,
                                              category__department__organization__slug=organization)
         except Question.DoesNotExist:
             return Response(status=404)
@@ -185,6 +186,5 @@ class QuestionsView(APIView):
         """Получение всех категорий"""
         questions = Question.objects.filter(category_id=category_id, category__department__slug=department,
                                             category__department__organization__slug=organization)
-
         serializer = QuestionsSerializer(questions, many=True)
         return Response(serializer.data)

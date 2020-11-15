@@ -65,7 +65,7 @@
         </div>
 
         <div v-else>
-          <Questions/>
+          <Questions :category_id="parent_category.id"/>
         </div>
 
 
