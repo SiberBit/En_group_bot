@@ -15,9 +15,13 @@ class Profile(models.Model):
     def create_user_profile(sender, instance, created, **kwargs):
         if created:
             Profile.objects.create(user=instance)
+            if instance.is_staff:  # добавляем админу все организации
+                instance.profile.organization.set(Organization.objects.all())
 
     @receiver(post_save, sender=User)
     def save_user_profile(sender, instance, **kwargs):
+        if instance.is_staff:  # добавляем админу все организации
+            instance.profile.organization.set(Organization.objects.all())
         instance.profile.save()
 
     class Meta:
@@ -26,5 +30,3 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.username
-
-
