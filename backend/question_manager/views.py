@@ -6,7 +6,7 @@ from django.shortcuts import render
 
 from En_group_bot.settings import DEBUG
 from question_manager.models import Category, Question, Organization, Department
-from question_manager.permissions import IsAuthorizedOrganization
+from question_manager.permissions import IsAuthorizedOrganization, IsChatBot
 from question_manager.serializers import CategoriesSerializer, QuestionsSerializer, OrganizationSerializer, \
     DepartmentSerializer
 
@@ -60,7 +60,7 @@ class OrganizationsDepartmentsView(APIView):
 
 
 class CategoryView(APIView):
-    permission_classes = [IsAuthenticated, IsAuthorizedOrganization]
+    permission_classes = [IsChatBot | (IsAuthenticated & IsAuthorizedOrganization)]
 
     def get(self, request, organization, department, pk):
         """Получение информации о категории по id"""
@@ -113,7 +113,7 @@ class CategoryView(APIView):
 
 
 class CategoriesView(APIView):
-    permission_classes = [IsAuthenticated, IsAuthorizedOrganization]
+    permission_classes = [IsChatBot | (IsAuthenticated & IsAuthorizedOrganization)]
 
     def get(self, request, organization, department, pk=None):
         """Получение всех категорий"""
