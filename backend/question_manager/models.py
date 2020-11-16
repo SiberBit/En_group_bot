@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+from question_manager.generate_token import generate_unique_token
+
 
 class Organization(models.Model):
     """Организации"""
@@ -67,14 +69,21 @@ class Question(models.Model):
         return f'id: {self.id} question: {self.question}'
 
 
+def generate_bot_token():
+    """Генерация токена для бота"""
+    return generate_unique_token(ChatBot, 'token')
+
+
 class ChatBot(models.Model):
     """Чат боты"""
     name = models.CharField('Название', max_length=64)
     platform = models.CharField('Платформа', max_length=64)
-    link = models.URLField('Ссылка на бота')
     organization = models.ForeignKey(Organization, verbose_name='Организация', on_delete=models.DO_NOTHING)
     department = models.ForeignKey(Department, verbose_name='Подразделение', on_delete=models.DO_NOTHING)
     description = models.TextField('Описание', max_length=100)
+
+    API_url = models.URLField('API ссылка', null=True)
+    token = models.CharField('Токен авторизации', max_length=64, default=generate_bot_token)
 
     class Meta:
         verbose_name = 'Чат бота'

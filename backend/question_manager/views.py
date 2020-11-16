@@ -37,7 +37,6 @@ class UserOrganizationsView(APIView):
         """Организации пользователя"""
         organizations = request.user.profile.organization.all()
         serializer = OrganizationSerializer(organizations, many=True)
-
         return Response(serializer.data)
 
 
