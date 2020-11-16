@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from question_manager.models import Category, Question, Organization, Department
+from question_manager.models import Category, Question, Organization, Department, ChatBot
 
 
 class OrganizationSerializer(serializers.ModelSerializer):
@@ -32,4 +32,12 @@ class QuestionsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Question
+        fields = '__all__'
+
+
+class ChatBotSerializer(serializers.ModelSerializer):
+    """Чат боты"""
+
+    class Meta:
+        model = ChatBot
         fields = '__all__'

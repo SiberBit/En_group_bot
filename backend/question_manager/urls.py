@@ -21,8 +21,10 @@ urlpatterns = [
     path("category/<str:organization>/<str:department>/", views.CategoryView.as_view()),
 
     path("questions/<str:organization>/<str:department>/<int:category_id>/", views.QuestionsView.as_view()),
-    path("questions/<str:organization>/<str:department>/", views.QuestionsView.as_view()),
     path("question/<str:organization>/<str:department>/<int:pk>/", views.QuestionView.as_view()),
     path("question/<str:organization>/<str:department>/", views.QuestionView.as_view()),
 
+    path("chat-bots/<str:organization>/", views.ChatBotsView.as_view()),
+    path("chat-bot/<str:organization>/<int:pk>/", views.ChatBotView.as_view()),
+    path("chat-bot/<str:organization>/", views.ChatBotView.as_view()),
 ]

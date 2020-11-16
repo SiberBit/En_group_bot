@@ -82,7 +82,7 @@ class ChatBot(models.Model):
     department = models.ForeignKey(Department, verbose_name='Подразделение', on_delete=models.DO_NOTHING)
     description = models.TextField('Описание', max_length=100)
 
-    API_url = models.URLField('API ссылка', null=True)
+    API_url = models.URLField('API URL для бота')
     token = models.CharField('Токен авторизации', max_length=64, default=generate_bot_token)
 
     class Meta:

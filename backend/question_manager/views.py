@@ -5,10 +5,10 @@ from rest_framework.views import APIView
 from django.shortcuts import render
 
 from En_group_bot.settings import DEBUG
-from question_manager.models import Category, Question, Organization, Department
+from question_manager.models import Category, Question, Organization, Department, ChatBot
 from question_manager.permissions import IsAuthorizedOrganization, IsChatBot
 from question_manager.serializers import CategoriesSerializer, QuestionsSerializer, OrganizationSerializer, \
-    DepartmentSerializer
+    DepartmentSerializer, ChatBotSerializer
 
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
@@ -128,7 +128,7 @@ class CategoriesView(APIView):
 
 
 class QuestionView(APIView):
-    permission_classes = [IsAuthenticated, IsAuthorizedOrganization]
+    permission_classes = [IsChatBot | (IsAuthenticated & IsAuthorizedOrganization)]
 
     def get(self, request, organization, department, pk):
         """Получение информации о вопросе по id"""
@@ -142,16 +142,15 @@ class QuestionView(APIView):
         return Response(serializer.data)
 
     def post(self, request, **kwargs):
-        """Создание категории"""
+        """Создание вопроса"""
         questions = QuestionsSerializer(data=request.data)
-        print(questions)
         if questions.is_valid():
             questions.save()
             return Response(status=201, data=questions.data)
         return Response(status=400)
 
     def put(self, request, organization, department, pk):
-        """Изменение категории"""
+        """Изменение вопроса"""
         data = request.data
         try:
             questions = Question.objects.get(id=pk, category__department__slug=department,
@@ -181,11 +180,70 @@ class QuestionView(APIView):
 
 
 class QuestionsView(APIView):
-    permission_classes = [IsAuthenticated, IsAuthorizedOrganization]
+    permission_classes = [IsChatBot | (IsAuthenticated & IsAuthorizedOrganization)]
 
-    def get(self, request, category_id, organization, department):
-        """Получение всех категорий"""
+    def get(self, request, organization, department, category_id):
+        """Получение всех вопросов"""
         questions = Question.objects.filter(category_id=category_id, category__department__slug=department,
                                             category__department__organization__slug=organization)
         serializer = QuestionsSerializer(questions, many=True)
+        return Response(serializer.data)
+
+
+class ChatBotView(APIView):
+    permission_classes = [IsAuthenticated & IsAuthorizedOrganization]
+
+    def get(self, request, organization, pk):
+        """Получение информации о чат боте по id"""
+        try:
+            chat_bot = ChatBot.objects.get(id=pk, organization__slug=organization)
+        except ChatBot.DoesNotExist:
+            return Response(status=404)
+        serializer = ChatBotSerializer(chat_bot)
+
+        return Response(serializer.data)
+
+    def post(self, request, **kwargs):
+        """Добавление чат бота"""
+        chat_bot = ChatBotSerializer(data=request.data)
+        if chat_bot.is_valid():
+            chat_bot.save()
+            return Response(status=201, data=chat_bot.data)
+        return Response(status=400)
+
+    def put(self, request, organization, pk):
+        """Изменение категории"""
+        data = request.data
+        try:
+            chat_bot = ChatBot.objects.get(id=pk, organization__slug=organization)
+        except ChatBot.DoesNotExist:
+            return Response(status=404)
+        serializer = ChatBotSerializer(chat_bot, data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status=201, data=serializer.data)
+        return Response(status=400)
+
+    def delete(self, request, organization):
+        data = request.data
+        try:
+            chat_bot = ChatBot.objects.get(id=data['id'], organization__slug=organization)
+        except ChatBot.DoesNotExist:
+            return Response(status=404)
+        data = {}
+        operation = chat_bot.delete()
+        if operation:
+            data['success'] = 'delete successful'
+        else:
+            data['error'] = 'delete failed'
+        return Response(data=data)
+
+
+class ChatBotsView(APIView):
+    permission_classes = [IsAuthenticated & IsAuthorizedOrganization]
+
+    def get(self, request, organization):
+        """Получение всех категорий"""
+        chat_bot = ChatBot.objects.filter(organization__slug=organization)
+        serializer = ChatBotSerializer(chat_bot, many=True)
         return Response(serializer.data)
