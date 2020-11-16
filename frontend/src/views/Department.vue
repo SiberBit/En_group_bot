@@ -7,7 +7,7 @@
 
     <div v-else-if="status==='success'">
 
-      <b-button style="padding: 0" @click="add_department()" variant="outline-primary">
+      <b-button style="padding: 0" v-if="user.is_staff" @click="add_department()" variant="outline-primary">
         <div style="padding: 6px 12px; outline: none;" v-b-modal.modal-prevent-closing>
           Добавить подразделение
         </div>
@@ -30,7 +30,7 @@
             <div class="col-md-10">
               <a href="">(Информация о боте)</a>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-2" v-if="user.is_staff">
               <b-button style="padding: 0" @click="edit_department(department)" variant="outline-primary">
                 <div style="padding: 6px 12px; outline: none;" v-b-modal.modal-prevent-closing>
                   Редактировать
@@ -108,6 +108,9 @@ export default {
     Loading
   },
   computed: {
+    user() {
+      return this.$store.getters.user
+    },
     organization: {
       get() {
         return this.$store.getters.organization
@@ -213,7 +216,7 @@ export default {
       });
     },
 
-    sendDataAdd(){
+    sendDataAdd() {
       let data = this.$data._editable_department
       const slug = Slug(this.$data._editable_department.name)
       data["slug"] = slug
@@ -236,9 +239,7 @@ export default {
 
       if (this.form_action === 'edit') {
         this.sendDataEdit()
-      }
-      else if(this.form_action === 'add')
-      {
+      } else if (this.form_action === 'add') {
         this.sendDataAdd()
       }
 

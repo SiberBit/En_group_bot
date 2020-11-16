@@ -44,7 +44,7 @@
           <b-nav-item-dropdown right>
             <!-- Using 'button-content' slot -->
             <template #button-content>
-              <em>{{ user.username }}</em>
+              <em>{{ user.username }} <span v-if="user.is_staff">(администратор)</span></em>
             </template>
             <b-dropdown-item>Профиль</b-dropdown-item>
             <b-dropdown-item><a @click="logout">Выход</a></b-dropdown-item>
@@ -79,8 +79,7 @@ export default {
   },
 
   data: function () {
-    return {
-    }
+    return {}
   },
   methods: {
     logout: function () {

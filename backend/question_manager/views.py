@@ -129,6 +129,7 @@ class CategoriesView(APIView):
 
 
 class QuestionView(APIView):
+    permission_classes = [IsAuthenticated, IsAuthorizedOrganization]
 
     def get(self, request, organization, department, pk):
         """Получение информации о вопросе по id"""
@@ -181,6 +182,7 @@ class QuestionView(APIView):
 
 
 class QuestionsView(APIView):
+    permission_classes = [IsAuthenticated, IsAuthorizedOrganization]
 
     def get(self, request, category_id, organization, department):
         """Получение всех категорий"""
