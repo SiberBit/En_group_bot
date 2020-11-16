@@ -17,7 +17,8 @@ export default new Vuex.Store({
         api_url: host_url + 'api/v1/',
         user_url: host_url + 'user/',
         organization: {},
-        department: {}
+        department: {},
+        departments_list: [],
     },
     plugins: [createPersistedState()],
     mutations: {
@@ -43,7 +44,8 @@ export default new Vuex.Store({
         },
         set_department(state, department) {
             state.department = department
-        }
+        },
+
     },
     actions: {
         login({commit}, user) {
@@ -92,5 +94,6 @@ export default new Vuex.Store({
                 return state.department
             },
         },
+
 
 })

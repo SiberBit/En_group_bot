@@ -35,8 +35,20 @@ class QuestionsSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class ChatBotSerializer(serializers.ModelSerializer):
-    """Чат боты"""
+class ChatBotReadSerializer(serializers.ModelSerializer):
+    """Чат боты (для чтения)"""
+    department = DepartmentSerializer()
+
+    class Meta:
+        model = ChatBot
+        fields = '__all__'
+
+
+class ChatBotWriteSerializer(serializers.ModelSerializer):
+    """Чат боты (для изменения)"""
+    department = serializers.PrimaryKeyRelatedField(
+        queryset=Department.objects.all(),
+    )
 
     class Meta:
         model = ChatBot

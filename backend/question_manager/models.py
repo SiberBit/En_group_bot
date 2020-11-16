@@ -80,7 +80,7 @@ class ChatBot(models.Model):
     platform = models.CharField('Платформа', max_length=64)
     organization = models.ForeignKey(Organization, verbose_name='Организация', on_delete=models.DO_NOTHING)
     department = models.ForeignKey(Department, verbose_name='Подразделение', on_delete=models.DO_NOTHING)
-    description = models.TextField('Описание', max_length=100)
+    description = models.TextField('Описание')
 
     API_url = models.URLField('API URL для бота')
     token = models.CharField('Токен авторизации', max_length=64, default=generate_bot_token)
