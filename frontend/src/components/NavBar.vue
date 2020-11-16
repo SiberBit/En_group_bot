@@ -14,8 +14,8 @@
             <router-link to="/department">Подразделения</router-link>
           </b-nav-item>
 
-          <b-nav-item disabled>
-            <router-link to="">Чат боты</router-link>
+          <b-nav-item>
+            <router-link to="/chat-bots">Чат боты</router-link>
           </b-nav-item>
         </b-navbar-nav>
 

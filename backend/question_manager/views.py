@@ -193,7 +193,7 @@ class QuestionsView(APIView):
 class ChatBotView(APIView):
     permission_classes = [IsAuthenticated & IsAuthorizedOrganization]
 
-    def get(self, request, organization, pk):
+    def get(self, request, organization, pk=None):
         """Получение информации о чат боте по id"""
         try:
             chat_bot = ChatBot.objects.get(id=pk, organization__slug=organization)
@@ -243,7 +243,7 @@ class ChatBotsView(APIView):
     permission_classes = [IsAuthenticated & IsAuthorizedOrganization]
 
     def get(self, request, organization):
-        """Получение всех категорий"""
+        """Получение всех чат ботов"""
         chat_bot = ChatBot.objects.filter(organization__slug=organization)
         serializer = ChatBotSerializer(chat_bot, many=True)
         return Response(serializer.data)

@@ -5,7 +5,9 @@ import Home from './views/Home.vue'
 import Login from './components/Login.vue'
 import Department from "@/views/Department";
 import Categories from "@/views/Categories";
+import ChatBots from "@/views/ChatBots";
 import axios from 'axios'
+
 
 Vue.use(Router)
 
@@ -45,6 +47,14 @@ let router = new Router({
             path: '/department',
             name: 'Department',
             component: Department,
+            meta: {
+                requiresAuth: true
+            }
+        },
+                {
+            path: '/chat-bots',
+            name: 'ChatBots',
+            component: ChatBots,
             meta: {
                 requiresAuth: true
             }
