@@ -1,8 +1,13 @@
 version: "3"
 
 services:
-  en_group_bot:
-    build: .
+  tg_bot:
+    build: tg_bot/
     restart: always
     ports:
-      - 0.0.0.0:8080:8080
+      - 0.0.0.0:8081:8081
+
+    environment:
+        - TG_TOKEN=${TG_TOKEN} # токен telegram бота
+        - HOST_URL=${HOST_URL} # URL сервера (если оставить HOST_URL пустым, то бот запустится локально)
+        - API_TOKEN=${API_TOKEN}
