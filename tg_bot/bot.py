@@ -6,11 +6,15 @@ import functions.creating_buttons as cb
 from functions.api import API
 
 TOKEN = os.environ.get('TG_TOKEN')
-API_URL = 'http://127.0.0.1:8000/api/'
+API_TOKEN = os.environ.get('API_TOKEN')
+
+API_URL = 'http://127.0.0.1:8000/api/v1/'
+ORGANIZATION_SLUG = 'testovaya-organizaciya'
+DEPARTAMENT_SLUG = 'podrazdelenie-1'
 
 bot = telebot.TeleBot(TOKEN, threaded=False)
 
-api = API(api_url=API_URL)
+api = API(api_url=API_URL, organization_slug=ORGANIZATION_SLUG, department_slug=DEPARTAMENT_SLUG, token=API_TOKEN)
 
 
 # ==================== Обработка команд ==================== #

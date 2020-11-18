@@ -50,6 +50,8 @@
               <b-collapse :id="'collapse-' + chat_bot.id" class="mt-2">
                 <b-card>
                   <div class="chat-bot-API_url">API_url: {{ chat_bot.API_url }}</div>
+                  <div class="chat-bot-organization_slug">organization_slug: {{ organization.slug }}</div>
+                  <div class="chat-bot-department_slug">department_slug: {{ chat_bot.department.slug }}</div>
                   <div class="chat-bot-token">TOKEN: {{ chat_bot.token }}</div>
                 </b-card>
               </b-collapse>
