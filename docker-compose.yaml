@@ -1,9 +1,13 @@
 version: "3"
 
 services:
+  backend:
+    build: backend/
+    restart: always
 
   frontend_and_nginx:
     build: frontend/
+    restart: always
     ports:
       - 0.0.0.0:8080:80
 
@@ -11,8 +15,6 @@ services:
   tg_bot:
     build: tg_bot/
     restart: always
-    ports:
-      - 0.0.0.0:8081:8081
 
     environment:
         - TG_TOKEN=${TG_TOKEN} # токен telegram бота
