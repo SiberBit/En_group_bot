@@ -1,9 +1,9 @@
 # этап сборки (build stage)
 FROM node:lts-alpine as build-stage
 WORKDIR /app
-COPY ../frontend/package*.json ./
+COPY frontend/package*.json ./
 RUN npm install
-COPY ../frontend .
+COPY frontend .
 RUN npm run build
 
 
