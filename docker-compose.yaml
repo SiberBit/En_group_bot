@@ -4,12 +4,16 @@ services:
   backend:
     build: backend/
     restart: always
+    container_name: backend
 
   frontend_and_nginx:
     build: frontend/
     restart: always
+    container_name: frontend_and_nginx
     ports:
       - 0.0.0.0:8080:80
+    links:
+      - backend
 
 
   tg_bot:
