@@ -1,8 +1,9 @@
 version: "3"
 
 services:
-  nginx:
-    build: nginx
+
+  frontend_and_nginx:
+    build: frontend/
     ports:
       - 0.0.0.0:8080:80
 
