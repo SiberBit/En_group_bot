@@ -1,6 +1,14 @@
 version: "3"
 
 services:
+  frontend:
+    build: frontend/
+  nginx:
+    build: nginx
+    ports:
+      - 0.0.0.0:8080:80
+
+
   tg_bot:
     build: tg_bot/
     restart: always
