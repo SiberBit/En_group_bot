@@ -28,6 +28,13 @@ def start_message(message):
                      reply_markup=cb.make_inline_keyboard_categories(categories=categories))
 
 
+# Команда /help
+@bot.message_handler(commands=['help'])
+def start_message(message):
+    chat_id = message.chat.id
+    bot.send_message(chat_id=chat_id, text='Чат бот для решения типовых вопросов')
+
+
 # ==================== Обработка Inline кнопок ==================== #
 @bot.callback_query_handler(func=lambda call: True)
 def handle_query(message):
