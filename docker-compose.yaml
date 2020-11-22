@@ -5,6 +5,10 @@ services:
     build: backend/
     restart: always
     container_name: backend
+    volumes:
+      - .:/web_django
+    depends_on:
+      - db
 
   frontend_and_nginx:
     build: frontend/
@@ -14,6 +18,19 @@ services:
       - 0.0.0.0:8080:80
     links:
       - backend
+
+db:
+    image: mysql
+    ports:
+      - '3306:3306'
+    environment:
+      - MYSQL_DATABASE=${MYSQL_DATABASE} 'db_django'
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    restart: always
+    volumes:
+      - ./db_django:/var/lib/mysql
 
 
   tg_bot:
