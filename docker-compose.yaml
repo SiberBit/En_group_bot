@@ -1,13 +1,50 @@
 version: "3"
 
 services:
+  backend:
+    build: backend/
+    restart: always
+    container_name: backend
+    volumes:
+      - .:/web_django
+      - ./static:/static
+    depends_on:
+      - db
+
+  frontend_and_nginx:
+    build: frontend/
+    restart: always
+    container_name: frontend_and_nginx
+    ports:
+      - 0.0.0.0:8080:80
+    links:
+      - backend
+    volumes:
+      - ./static:/static
+    depends_on:
+      - backend
+
+  db:
+    image: postgres
+    restart: always
+
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+
+    volumes:
+      - ./db_django:/var/lib/mysql
+
+
   tg_bot:
     build: tg_bot/
     restart: always
-    ports:
-      - 0.0.0.0:8081:8081
 
     environment:
         - TG_TOKEN=${TG_TOKEN} # токен telegram бота
         - HOST_URL=${HOST_URL} # URL сервера (если оставить HOST_URL пустым, то бот запустится локально)
         - API_TOKEN=${API_TOKEN}
+        - API_URL=${API_URL}
+        - ORGANIZATION_SLUG=${ORGANIZATION_SLUG}
+        - DEPARTAMENT_SLUG=${DEPARTAMENT_SLUG}

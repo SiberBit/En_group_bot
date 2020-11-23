@@ -80,20 +80,13 @@ WSGI_APPLICATION = 'En_group_bot.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-
-# DATABASES = {
-#     # read os.environ['DATABASE_URL'] and raises ImproperlyConfigured exception if not found
-#     'default': env.db(),
-#     # read os.environ['SQLITE_URL']
-#     'extra': env.db('SQLITE_URL', default='sqlite:///db.sqlite3')
-# }
-
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+    # read os.environ['DATABASE_URL'] and raises ImproperlyConfigured exception if not found
+    'default': env.db(),
+    # read os.environ['SQLITE_URL']
+    'extra': env.db('SQLITE_URL', default='sqlite://db.sqlite3')
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -130,14 +123,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-]
+
+STATIC_ROOT = '/static'
 
 LOGIN_REDIRECT_URL = 'home'
 if DEBUG:
     CORS_ORIGIN_ALLOW_ALL = True
-
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (

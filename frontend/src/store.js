@@ -5,7 +5,12 @@ import createPersistedState from "vuex-persistedstate";
 
 Vue.use(Vuex)
 
-const host_url = 'http://127.0.0.1:8000/';
+
+let host_url = '/';
+if (process.env.NODE_ENV === 'development'){
+    host_url = 'http://localhost:8000/';
+}
+console.log(host_url)
 
 
 export default new Vuex.Store({
