@@ -80,16 +80,12 @@ WSGI_APPLICATION = 'En_group_bot.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-db = env.db()
-db['OPTIONS'] = {'charset': 'utf8mb4'}
-
 DATABASES = {
     # read os.environ['DATABASE_URL'] and raises ImproperlyConfigured exception if not found
-    'default': db,
+    'default': env.db(),
     # read os.environ['SQLITE_URL']
     'extra': env.db('SQLITE_URL', default='sqlite:///db.sqlite3')
 }
-print(db)
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
