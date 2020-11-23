@@ -7,7 +7,7 @@ services:
     container_name: backend
     volumes:
       - .:/web_django
-      - /static:/static
+      - ./static:/static
     depends_on:
       - db
 
@@ -20,7 +20,7 @@ services:
     links:
       - backend
     volumes:
-      - /static:/static
+      - ./static:/static
     depends_on:
       - backend
 
