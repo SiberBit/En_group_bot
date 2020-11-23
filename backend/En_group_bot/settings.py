@@ -84,8 +84,9 @@ DATABASES = {
     # read os.environ['DATABASE_URL'] and raises ImproperlyConfigured exception if not found
     'default': env.db(),
     # read os.environ['SQLITE_URL']
-    'extra': env.db('SQLITE_URL', default='sqlite:///db.sqlite3')
+    'extra': env.db('SQLITE_URL', default='sqlite://db.sqlite3')
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -123,7 +124,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATIC_ROOT = '/static'
 
 LOGIN_REDIRECT_URL = 'home'
 if DEBUG:
