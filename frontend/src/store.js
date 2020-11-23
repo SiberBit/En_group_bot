@@ -6,7 +6,7 @@ import createPersistedState from "vuex-persistedstate";
 Vue.use(Vuex)
 
 
-let host_url = '/';
+let host_url = 'https://chat.irk-leader.ru/';
 if (process.env.NODE_ENV === 'development'){
     host_url = 'http://localhost:8000/';
 }
