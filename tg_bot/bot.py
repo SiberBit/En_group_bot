@@ -8,9 +8,14 @@ from functions.api import API
 TOKEN = os.environ.get('TG_TOKEN')
 API_TOKEN = os.environ.get('API_TOKEN')
 
-API_URL = 'http://127.0.0.1:8000/api/v1/'
-ORGANIZATION_SLUG = 'testovaya-organizaciya'
-DEPARTAMENT_SLUG = 'podrazdelenie-1'
+API_URL = os.environ.get('API_URL')
+ORGANIZATION_SLUG = os.environ.get('ORGANIZATION_SLUG')
+DEPARTAMENT_SLUG = os.environ.get('DEPARTAMENT_SLUG')
+
+if not (API_URL and ORGANIZATION_SLUG and DEPARTAMENT_SLUG):
+    API_URL = 'http://127.0.0.1:8000/api/v1/'
+    ORGANIZATION_SLUG = 'testovaya-organizaciya'
+    DEPARTAMENT_SLUG = 'podrazdelenie-1'
 
 bot = telebot.TeleBot(TOKEN, threaded=False)
 

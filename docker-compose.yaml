@@ -45,3 +45,6 @@ services:
         - TG_TOKEN=${TG_TOKEN} # токен telegram бота
         - HOST_URL=${HOST_URL} # URL сервера (если оставить HOST_URL пустым, то бот запустится локально)
         - API_TOKEN=${API_TOKEN}
+        - API_URL=${API_URL}
+        - ORGANIZATION_SLUG=${ORGANIZATION_SLUG}
+        - DEPARTAMENT_SLUG=${DEPARTAMENT_SLUG}
