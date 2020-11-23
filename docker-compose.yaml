@@ -7,6 +7,7 @@ services:
     container_name: backend
     volumes:
       - .:/web_django
+      - /static:/static
     depends_on:
       - db
 
@@ -17,6 +18,10 @@ services:
     ports:
       - 0.0.0.0:8080:80
     links:
+      - backend
+    volumes:
+      - /static:/static
+    depends_on:
       - backend
 
   db:
