@@ -13,6 +13,8 @@ Vue.use(Router)
 
 let router = new Router({
     mode: 'history',
+    linkActiveClass: "active",
+    linkExactActiveClass: "exact-active",
     routes: [
 
         {
@@ -51,7 +53,7 @@ let router = new Router({
                 requiresAuth: true
             }
         },
-                {
+        {
             path: '/chat-bots',
             name: 'ChatBots',
             component: ChatBots,
