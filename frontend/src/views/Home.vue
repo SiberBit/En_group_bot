@@ -1,6 +1,7 @@
 <template>
   <div class="home">
-  (Новости или что-то ещё)
+    <h1>Главная</h1>
+    (Новости или что-то ещё)
   </div>
 </template>
 
@@ -9,7 +10,12 @@
 
 export default {
   name: 'home',
-  components: {
-  }
 }
 </script>
+
+<style scoped>
+  h1 {
+    margin: 10px 0 20px;
+  }
+
+</style>

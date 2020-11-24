@@ -7,11 +7,11 @@
 
     <div v-else-if="status==='success'">
 
-      <b-button style="padding: 0" @click="add_chat_bot()" variant="outline-primary">
+      <button class="btn btn-outline" style="padding: 0" @click="add_chat_bot()">
         <div style="padding: 6px 12px; outline: none;" v-b-modal.modal-prevent-closing>
           Добавить чат-бота
         </div>
-      </b-button>
+      </button>
 
 
       <!--Информация о чат боте-->
@@ -59,11 +59,11 @@
 
             </div>
             <div class="col-md-2">
-              <b-button style="padding: 0" @click="edit_chat_bot(chat_bot)" variant="outline-primary">
+              <button class="btn btn-outline" style="padding: 0" @click="edit_chat_bot(chat_bot)">
                 <div style="padding: 6px 12px; outline: none;" v-b-modal.modal-prevent-closing>
                   Редактировать
                 </div>
-              </b-button>
+              </button>
             </div>
           </div>
 
@@ -79,7 +79,9 @@
           @hidden="handleCancel"
           @ok="handleOk"
           ok-title="Сохранить"
+          ok-variant="outline-success"
           cancel-title="Отмена"
+          cancel-variant="outline-secondary"
       >
 
         <!--Форма редактирования-->
@@ -326,9 +328,41 @@ export default {
   padding-top: 20px;
 }
 
-.collapse-btn:active, .collapse-btn:focus {
-  -webkit-box-shadow: none;
-  text-decoration: none
+.collapse-btn {
+  color: #ff941a;
 }
 
+.collapse-btn:hover,
+.collapse-btn:active,
+.collapse-btn:focus,
+.collapse-btn:visited {
+  -webkit-box-shadow: none;
+  text-decoration: none;
+  color: #ff941a;
+}
+
+/*Кнопки*/
+.btn-outline {
+  color: #ff941a;
+  border-color: #ff941a;
+}
+
+.btn-outline:hover,
+.btn-outline:focus,
+.btn-outline:visited,
+.btn-outline:active {
+  background-color: #ff941a;
+  border-color: #ff941a;
+  color: white;
+}
+
+/*Карточки*/
+.card {
+  border: 1px solid rgb(255, 148, 26);
+  margin-bottom: 10px;
+}
+
+h1 {
+  margin: 10px 0 20px;
+}
 </style>

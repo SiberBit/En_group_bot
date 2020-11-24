@@ -40,28 +40,28 @@
       <div class="row">
 
         <div v-for="category in categories" v-bind:key=category.id style="padding: 5px">
-          <b-button variant="success">
+          <button class="btn btn-outline">
             <div class="row" style="margin: 0 5px; ">
               <div style="padding-right: 10px" @click="get_categories(category)">
                 {{ category.name }}
               </div>
-              <div title="Редактировать" style="" @click="edit_category(category)" variant="outline-primary">
+              <div title="Редактировать" style="" @click="edit_category(category)" variant="outline-warning">
                 <div style="outline: none;" v-b-modal.modal-prevent-closing>
                   <img style="height: 20px" src="../assets/text_edit.png">
                 </div>
               </div>
             </div>
-          </b-button>
+          </button>
         </div>
 
         <!--Кнопка Добавить категорию-->
 
         <div v-if="!parent_category || parent_category.target==='categories'" style="padding: 5px">
-          <b-button title="Добавить категорию" style="padding: 0" @click="add_category()" variant="outline-success">
+          <button class="btn btn-outline" title="Добавить категорию" style="padding: 0" @click="add_category()">
             <div style="padding: 6px 12px; outline: none;" v-b-modal.modal-prevent-closing>
               <img style="height: 20px" src="../assets/plus.svg">
             </div>
-          </b-button>
+          </button>
         </div>
 
         <div v-else>
@@ -82,7 +82,9 @@
         @hidden="handleCancel"
         @ok="handleOk"
         ok-title="Сохранить"
+        ok-variant="outline-success"
         cancel-title="Отмена"
+        cancel-variant="outline-secondary"
     >
 
       <!--Форма редактирования-->
@@ -313,4 +315,32 @@ export default {
 </script>
 
 <style scoped>
+
+a {
+  color: #393330;
+}
+
+a:hover {
+  color: #ff941a;
+  text-decoration: underline;
+}
+
+/*Кнопки*/
+.btn-outline {
+  color: #ff941a;
+  border-color: #ff941a;
+}
+
+.btn-outline:hover,
+.btn-outline:focus,
+.btn-outline:visited,
+.btn-outline:active{
+  background-color: #ff941a;
+  border-color: #ff941a;
+  color: white;
+}
+
+h1{
+  margin: 10px 0 20px;
+}
 </style>

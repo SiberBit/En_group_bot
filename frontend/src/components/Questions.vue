@@ -1,11 +1,11 @@
 <template>
   <div class="question-list">
 
-    <b-button style="padding: 0; margin-bottom: 15px" @click="add_question()" variant="outline-primary">
+    <button class="btn btn-outline" style="padding: 0; margin-bottom: 15px" @click="add_question()">
       <div style="padding: 6px 12px; outline: none;" v-b-modal.modal-prevent-closing-questions>
         Добавить вопрос
       </div>
-    </b-button>
+    </button>
 
 
     <table class="table table-bordered">
@@ -24,11 +24,11 @@
           {{ question.answer }}
           <br>
           <div class="text-right">
-            <b-button style="padding: 0" @click="edit_question(question)" variant="outline-primary">
+            <button class="btn btn-outline" style="padding: 0" @click="edit_question(question)">
               <div style="padding: 6px 12px; outline: none;" v-b-modal.modal-prevent-closing-questions>
                 Редактировать
               </div>
-            </b-button>
+            </button>
           </div>
         </td>
       </tr>
@@ -45,7 +45,9 @@
         @hidden="handleCancel"
         @ok="handleOk"
         ok-title="Сохранить"
+        ok-variant="outline-success"
         cancel-title="Отмена"
+        cancel-variant="outline-secondary"
     >
 
       <!--Форма редактирования-->
@@ -239,5 +241,44 @@ export default {
 </script>
 
 <style scoped>
+a {
+  color: #393330;
+}
 
+a:hover {
+  color: #ff941a;
+  text-decoration: underline;
+}
+
+/*Кнопки*/
+.btn-outline {
+  color: #ff941a;
+  border-color: #ff941a;
+}
+
+.btn-outline:hover,
+.btn-outline:focus,
+.btn-outline:visited,
+.btn-outline:active {
+  background-color: #ff941a;
+  border-color: #ff941a;
+  color: white;
+}
+
+/*Таблица*/
+table.table-bordered {
+  border: 1px solid #ff941a;
+}
+
+table.table-bordered > thead > tr > th {
+  border: 1px solid #ff941a;
+}
+
+table.table-bordered > tbody > tr > td {
+  border: 1px solid #ff941a;
+}
+
+h1 {
+  margin: 10px 0 20px;
+}
 </style>

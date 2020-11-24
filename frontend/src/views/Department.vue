@@ -7,14 +7,14 @@
 
     <div v-else-if="status==='success'">
 
-      <b-button style="padding: 0" v-if="user.is_staff" @click="add_department()" variant="outline-primary">
+      <button class="btn btn-outline" style="padding: 0" v-if="user.is_staff" @click="add_department()">
         <div style="padding: 6px 12px; outline: none;" v-b-modal.modal-prevent-closing>
           Добавить подразделение
         </div>
-      </b-button>
+      </button>
 
 
-      <div class="department-list">
+      <div class="department-list ">
         <b-card v-for="department in departments" v-bind:key=department.id
                 style="padding: 10px">
           <router-link to="/categories/">
@@ -31,11 +31,11 @@
               <a href="">(Информация о боте)</a>
             </div>
             <div class="col-md-2" v-if="user.is_staff">
-              <b-button style="padding: 0" @click="edit_department(department)" variant="outline-primary">
+              <button class="btn btn-outline" style="padding: 0" @click="edit_department(department)">
                 <div style="padding: 6px 12px; outline: none;" v-b-modal.modal-prevent-closing>
                   Редактировать
                 </div>
-              </b-button>
+              </button>
             </div>
           </div>
 
@@ -51,7 +51,9 @@
           @hidden="handleCancel"
           @ok="handleOk"
           ok-title="Сохранить"
+          ok-variant="outline-success"
           cancel-title="Отмена"
+          cancel-variant="outline-secondary"
       >
 
         <!--Форма редактирования-->
@@ -264,5 +266,44 @@ export default {
 <style scoped>
 .department-list {
   padding-top: 20px;
+}
+
+a {
+  color: #393330;
+}
+
+a:hover {
+  color: #ff941a;
+  text-decoration: underline;
+}
+
+/*Модальное окно*/
+.modal-footer{
+  background-color: blue;
+}
+
+
+/*Кнопки*/
+.btn-outline {
+  color: #ff941a;
+  border-color: #ff941a;
+}
+
+.btn-outline:hover,
+.btn-outline:focus,
+.btn-outline:visited,
+.btn-outline:active{
+  background-color: #ff941a;
+  border-color: #ff941a;
+  color: white;
+}
+/*Карточки*/
+.card{
+  border:1px solid rgb(255, 148, 26);
+  margin-bottom: 10px;
+}
+
+h1{
+  margin: 10px 0 20px;
 }
 </style>
