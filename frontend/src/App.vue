@@ -44,18 +44,34 @@ export default {
   color: #2c3e50;
 }
 
+a{
+ color: #393330;
+}
+a:hover {
+  color: #ff941a;
+  text-decoration: underline;
 
+}
 
 #nav a {
-  font-weight: bold;
-  cursor: pointer;
+  /*font-weight: bold;*/
+  /*cursor: pointer;*/
 }
 
 #nav a:hover {
+  color: #ff941a;
   text-decoration: underline;
 }
 
-#nav a.router-link-exact-active {
-  color: #42b983;
+/*#nav a.router-link-exact-active {*/
+/*  color: #42b983;*/
+/*}*/
+
+
+h1{
+  margin: 10px 0 20px;
 }
+
+
+
 </style>

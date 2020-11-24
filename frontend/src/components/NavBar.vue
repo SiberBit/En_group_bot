@@ -1,8 +1,8 @@
 <template>
   <div>
-    <b-navbar class="navbar" toggleable="lg" type="dark" variant="primary">
+    <b-navbar class="navbar" toggleable="lg" type="white" variant="muted">
       <b-navbar-brand>
-        <router-link style="color: white" to="/"  tag="a">En+ group bot</router-link>
+        <router-link class="logo" style="text-decoration: none;"  to="/" tag="a">En+ group bot</router-link>
       </b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
@@ -13,7 +13,7 @@
             <router-link class="navbar-item" tag="a" active-class="active" to="/" exact>Главная</router-link>
           </b-nav-item>
           <b-nav-item>
-            <router-link class="navbar-item" tag="a" active-class="active"  to="/department">Подразделения</router-link>
+            <router-link class="navbar-item" tag="a" active-class="active" to="/department">Подразделения</router-link>
           </b-nav-item>
 
           <b-nav-item>
@@ -24,8 +24,7 @@
 
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
-
-          <b-form-select v-model="organization">
+          <b-form-select v-model="organization" class="border-0">
             <option v-for="org in organizations" v-bind:value="org">
               {{ org.name }}
             </option>
@@ -34,7 +33,7 @@
           <b-nav-item-dropdown right>
             <!-- Using 'button-content' slot -->
             <template #button-content>
-              <em>{{ user.username }} <span v-if="user.is_staff">(администратор)</span></em>
+              <em class="user-name">{{ user.username }} <span v-if="user.is_staff">(администратор)</span></em>
             </template>
             <b-dropdown-item>Профиль</b-dropdown-item>
             <b-dropdown-item><a @click="logout">Выход</a></b-dropdown-item>
@@ -86,11 +85,30 @@ export default {
 <style scoped>
 
 .navbar-item {
-  color: white;
+  color: #393330;
+}
+
+.logo{
+
+  color: #393330;
+}
+.logo:hover {
+  text-decoration: none;
 }
 
 .active {
 
- }
+}
+
+/*Пользователь*/
+.user-name {
+  color: #eea65b;
+}
+
+/*Организация*/
+.custom-select:focus{
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
 
 </style>
