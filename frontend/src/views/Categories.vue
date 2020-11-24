@@ -45,7 +45,7 @@
               <div style="padding-right: 10px" @click="get_categories(category)">
                 {{ category.name }}
               </div>
-              <div title="Редактировать" style="" @click="edit_category(category)" variant="outline-warning">
+              <div title="Редактировать" @click="edit_category(category)" variant="outline-warning">
                 <div style="outline: none;" v-b-modal.modal-prevent-closing>
                   <img style="height: 20px" src="../assets/text_edit.png">
                 </div>
@@ -59,7 +59,7 @@
         <div v-if="!parent_category || parent_category.target==='categories'" style="padding: 5px">
           <button class="btn btn-outline" title="Добавить категорию" style="padding: 0" @click="add_category()">
             <div style="padding: 6px 12px; outline: none;" v-b-modal.modal-prevent-closing>
-              <img style="height: 20px" src="../assets/plus.svg">
+              <img style="height: 20px" src="../assets/plus.png">
             </div>
           </button>
         </div>
