@@ -86,7 +86,6 @@ celerybeat-schedule
 *.sage.py
 
 # dotenv
-.env
 *.env
 *set_env.bat
 
