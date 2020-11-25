@@ -24,10 +24,9 @@ SECRET_KEY = env('SECRET_KEY')
 # False if not in os.environ
 DEBUG = env('DEBUG')
 
-if DEBUG:
-    ALLOWED_HOSTS = ['*']
-else:
-    ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'chat.irk-leader.ru']
+
+ALLOWED_HOSTS = ['*']
+
 
 # Application definition
 
