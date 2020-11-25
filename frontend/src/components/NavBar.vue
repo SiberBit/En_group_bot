@@ -2,7 +2,7 @@
   <div>
     <b-navbar class="navbar" toggleable="lg" type="white" variant="muted">
       <b-navbar-brand>
-        <router-link class="logo" style="text-decoration: none;"  to="/" tag="a">En+ group bot</router-link>
+        <router-link class="logo" style="text-decoration: none;" to="/" tag="a">En+ group bot</router-link>
       </b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
@@ -48,11 +48,18 @@
 
 <script>
 
+import axios from "axios";
+
 export default {
   name: "NavBar",
   computed: {
-    user() {
-      return this.$store.getters.user
+    user: {
+      get() {
+        return this.$store.getters.user
+      },
+      set(user) {
+        this.$store.commit('set_user', user)
+      }
     },
     organizations() {
       return this.$store.getters.user.profile.organization
@@ -70,13 +77,28 @@ export default {
   data: function () {
     return {}
   },
+    created: function () {
+    this.get_user()
+  },
   methods: {
     logout: function () {
       this.$store.dispatch('logout')
           .then(() => {
             this.$router.push('/login')
           })
-    }
+    },
+
+    get_user() {
+      axios.get(this.$store.state.user_url).then((response) => {
+        this.user = response.data
+      }).catch((error) => {
+        console.log(error);
+        this.$store.dispatch('logout')
+            .then(() => {
+              this.$router.push('/login')
+            })
+      });
+    },
   },
 
 }
@@ -88,10 +110,11 @@ export default {
   color: #393330;
 }
 
-.logo{
+.logo {
 
   color: #393330;
 }
+
 .logo:hover {
   text-decoration: none;
 }
@@ -106,7 +129,7 @@ export default {
 }
 
 /*Организация*/
-.custom-select:focus{
+.custom-select:focus {
   -webkit-box-shadow: none;
   box-shadow: none;
 }
