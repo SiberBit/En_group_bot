@@ -45,9 +45,10 @@
               <div style="padding-right: 10px" @click="get_categories(category)">
                 {{ category.name }}
               </div>
-              <div title="Редактировать" @click="edit_category(category)" variant="outline-warning">
-                <div style="outline: none;" v-b-modal.modal-prevent-closing>
-                  <img style="height: 20px" src="../assets/text_edit.png">
+              <div class="edit-text" title="Редактировать" @click="edit_category(category)" variant="outline-warning">
+                <div class="edit-text-btn" style="outline: none;" v-b-modal.modal-prevent-closing>
+                  <div class="edit-text-img"></div>
+                  <!--                  <img style="height: 20px" src="../assets/text_edit.png">-->
                 </div>
               </div>
             </div>
@@ -327,20 +328,49 @@ a:hover {
 
 /*Кнопки*/
 .btn-outline {
-  color: #ff941a;
+  color: #393330;
   border-color: #ff941a;
 }
 
 .btn-outline:hover,
 .btn-outline:focus,
 .btn-outline:visited,
-.btn-outline:active{
-  background-color: #ff941a;
+.btn-outline:active {
   border-color: #ff941a;
-  color: white;
+  color: #ff941a;
 }
 
-h1{
+h1 {
   margin: 10px 0 20px;
+}
+
+/*Редактирование*/
+.edit-text {
+  vertical-alsign: middle;
+}
+
+.edit-text-btn {
+  vertical-align: middle;
+  height: 100%;
+}
+
+.edit-text-img {
+  margin-top: 2px;
+  height: 20px;
+  width: 20px;
+  text-align: center;
+  vertical-alsign: middle;
+  background-image: url("../assets/text_edit_black.png");
+  background-size: 100%;
+  background-position: center;
+}
+
+.edit-text:hover .edit-text-img,
+.edit-text:focus .edit-text-img,
+.edit-text:visited .edit-text-img,
+.edit-text:active .edit-text-img{
+
+  background-image: url("../assets/text_edit_orange.png");
+
 }
 </style>
