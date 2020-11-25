@@ -10,7 +10,6 @@ let host_url = 'https://chat.irk-leader.ru/';
 if (process.env.NODE_ENV === 'development'){
     host_url = 'http://localhost:8000/';
 }
-console.log(host_url)
 
 
 export default new Vuex.Store({
@@ -49,6 +48,9 @@ export default new Vuex.Store({
         },
         set_department(state, department) {
             state.department = department
+        },
+        set_user(state, user){
+            state.user = user
         },
 
     },

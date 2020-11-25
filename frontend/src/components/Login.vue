@@ -51,6 +51,7 @@ export default {
 .login-form {
 
   border: 2px solid #ff941a;
+  border-radius: .3rem;
   padding: 30px 80px;
 
   margin: 0;
