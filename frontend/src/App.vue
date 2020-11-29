@@ -50,7 +50,6 @@ a{
 a:hover {
   color: #ff941a;
   text-decoration: underline;
-
 }
 
 #nav a {

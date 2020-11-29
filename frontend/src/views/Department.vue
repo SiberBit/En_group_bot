@@ -28,7 +28,24 @@
           <!--Информация о чат боте-->
           <div class="row">
             <div class="col-md-10">
-              <a href="">(Информация о боте)</a>
+              <div v-if="department.chat_bot.length === 0" class="chat-bots">
+                Чат боты не добавлены
+              </div>
+              <div v-else class="chat-bots">
+                <div class="chat-bots-title">
+                  Чат боты:
+                </div>
+                <li v-for="chat_bot in department.chat_bot">
+                  <a class="chat-bot-name" @click="chat_bot_info(chat_bot)">
+                    <div style="outline: none; display: inline-block" v-b-modal.modal-chat-bot>
+                      {{ chat_bot.name }} ({{ chat_bot.platform }})
+                    </div>
+                  </a>
+
+                  <br>
+                </li>
+
+              </div>
             </div>
             <div class="col-md-2" v-if="user.is_staff">
               <button class="btn btn-outline" style="padding: 0" @click="edit_department(department)">
@@ -92,6 +109,49 @@
           </b-form-group>
         </form>
       </b-modal>
+
+
+      <!--Модальное окно Информация о боте-->
+      <b-modal
+          id="modal-chat-bot"
+          ref="modal"
+          :title="chat_bot.name"
+          @show="resetModalChatBot"
+          @hidden="handleCancelChatBot"
+          ok-only
+      >
+
+        <div chat-bot-info>
+          <p class="chat-bot-platform">
+            <b>Платформа:</b>
+            {{ chat_bot.platform }}
+          </p>
+          <p class="chat-bot-description">
+            <b>Описание:</b>
+            <br>
+            {{ chat_bot.description }}
+          </p>
+
+
+          <!--Кнопка для раскрытия информации о API_URL и TOKEN-->
+          <b-button class="collapse-btn" v-b-toggle="'collapse-' + chat_bot.id" style="padding: 0; outline: none;"
+                    variant="link">
+            Данные для API ↓
+          </b-button>
+
+          <!--Информация о API_URL и TOKEN-->
+          <b-collapse :id="'collapse-' + chat_bot.id" class="mt-2">
+            <b-card>
+              <div class="chat-bot-API_url"><b>API_url:</b> {{ chat_bot.API_url }}</div>
+              <div class="chat-bot-organization_slug"><b>organization_slug:</b> {{ organization.slug }}</div>
+              <div class="chat-bot-department_slug"><b>department_slug:</b> {{ department.slug }}</div>
+              <div class="chat-bot-token"><b>TOKEN:</b> {{ chat_bot.token }}</div>
+            </b-card>
+          </b-collapse>
+        </div>
+      </b-modal>
+
+
     </div>
   </div>
 
@@ -134,10 +194,15 @@ export default {
       _editable_department: {},
       validState: null,
 
+      chat_bot: {},
+      department: {},
+
+
     }
   },
   created: function () {
     this.get_departments()
+
   },
 
   methods: {
@@ -149,8 +214,10 @@ export default {
         const departments = response.data;
         this.departments = departments.reverse();
         this.status = "success"
+
       });
     },
+
     set_department(department) {
       // сохранение выбранного подразделения
       this.$store.commit('set_department', department)
@@ -192,6 +259,20 @@ export default {
       //загружаем актуальную информацию
       this.get_departments()
       this.resetModal()
+    },
+
+
+    resetModalChatBot() {
+      this.chat_bot = {}
+    },
+    handleCancelChatBot() {
+      this.chat_bot = {}
+    },
+
+
+    chat_bot_info(chat_bot) {
+      this.chat_bot = chat_bot
+      this.department = chat_bot.department
     },
 
 
@@ -278,7 +359,7 @@ a:hover {
 }
 
 /*Модальное окно*/
-.modal-footer{
+.modal-footer {
   background-color: blue;
 }
 
@@ -292,18 +373,25 @@ a:hover {
 .btn-outline:hover,
 .btn-outline:focus,
 .btn-outline:visited,
-.btn-outline:active{
+.btn-outline:active {
   background-color: #ff941a;
   border-color: #ff941a;
   color: white;
 }
+
 /*Карточки*/
-.card{
-  border:1px solid rgb(255, 148, 26);
+.card {
+  border: 1px solid rgb(255, 148, 26);
   margin-bottom: 10px;
 }
 
-h1{
+h1 {
   margin: 10px 0 20px;
+}
+
+/*Чат бот*/
+.chat-bot-name:hover {
+  color: #ff941a;
+  text-decoration: underline;
 }
 </style>

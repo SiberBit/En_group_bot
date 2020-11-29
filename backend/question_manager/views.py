@@ -54,9 +54,21 @@ class OrganizationsDepartmentsView(APIView):
         """Подразделения организации"""
 
         departments = Department.objects.filter(organization__slug=organization)
-        serializer = DepartmentSerializer(departments, many=True)
+        departments_serializer = DepartmentSerializer(departments, many=True)
+        departments = departments_serializer.data
 
-        return Response(serializer.data)
+        chat_bots = ChatBot.objects.filter(organization__slug=organization)
+        chat_bots_serializer = ChatBotReadSerializer(chat_bots, many=True)
+        chat_bots = chat_bots_serializer.data
+
+        for department in departments:
+            if not dict(department).get('chat_bot'):
+                department['chat_bot'] = []
+            for chat_bot in chat_bots:
+                if chat_bot['department']['id'] == department['id']:
+                    department['chat_bot'].append(chat_bot)
+
+        return Response(departments)
 
 
 class CategoryView(APIView):

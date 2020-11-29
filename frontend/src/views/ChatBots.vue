@@ -49,10 +49,10 @@
               <!--Информация о API_URL и TOKEN-->
               <b-collapse :id="'collapse-' + chat_bot.id" class="mt-2">
                 <b-card>
-                  <div class="chat-bot-API_url">API_url: {{ chat_bot.API_url }}</div>
-                  <div class="chat-bot-organization_slug">organization_slug: {{ organization.slug }}</div>
-                  <div class="chat-bot-department_slug">department_slug: {{ chat_bot.department.slug }}</div>
-                  <div class="chat-bot-token">TOKEN: {{ chat_bot.token }}</div>
+                  <div class="chat-bot-API_url"><b>API_url:</b> {{ chat_bot.API_url }}</div>
+                  <div class="chat-bot-organization_slug"><b>organization_slug:</b> {{ organization.slug }}</div>
+                  <div class="chat-bot-department_slug"><b>department_slug:</b> {{ chat_bot.department.slug }}</div>
+                  <div class="chat-bot-token"><b>TOKEN:</b> {{ chat_bot.token }}</div>
                 </b-card>
               </b-collapse>
 
@@ -197,7 +197,7 @@ export default {
   },
   methods: {
     get_chat_bots() {
-      //получение списка подразделений
+      //получение списка чат ботов
       this.status = "loading"
       axios.get(this.url.chat_bot_api + this.organization.slug + '/').then((response) => {
         console.log(response.data);
