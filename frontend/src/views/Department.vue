@@ -289,8 +289,8 @@ export default {
       // отправляем данные на сервер
       let data = this.$data._editable_department
       const id = this.$data._editable_department.id
-      const slug = Slug(this.$data._editable_department.name)
-      data["slug"] = slug
+      //const slug = Slug(this.$data._editable_department.name)
+      //data["slug"] = slug
       delete data["id"]
       axios.put(this.url.edit_department_api + id + '/', data).then((response) => {
         console.log(response.data);
