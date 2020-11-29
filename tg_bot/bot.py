@@ -12,14 +12,14 @@ API_URL = os.environ.get('API_URL')
 ORGANIZATION_SLUG = os.environ.get('ORGANIZATION_SLUG')
 DEPARTAMENT_SLUG = os.environ.get('DEPARTAMENT_SLUG')
 
-if not (API_URL and ORGANIZATION_SLUG and DEPARTAMENT_SLUG):
-    API_URL = 'http://127.0.0.1:8000/api/v1/'
-    ORGANIZATION_SLUG = 'testovaya-organizaciya'
-    DEPARTAMENT_SLUG = 'podrazdelenie-1'
-
 bot = telebot.TeleBot(TOKEN, threaded=False)
 
 api = API(api_url=API_URL, organization_slug=ORGANIZATION_SLUG, department_slug=DEPARTAMENT_SLUG, token=API_TOKEN)
+
+start_text = "Я Ваш личный бот помощник🦾\n\n" \
+             "Выбирайте категории вопросов, которые Вас интересуют,\n" \
+             "там Вы найдете ответы на большинство вопросов по выбранной теме🥳\n\n" \
+             "Если Вы не нашли интересующий Вас вопрос, свяжитесь с Call-центром🙄"
 
 
 # ==================== Обработка команд ==================== #
@@ -28,16 +28,26 @@ api = API(api_url=API_URL, organization_slug=ORGANIZATION_SLUG, department_slug=
 @bot.message_handler(commands=['start'])
 def start_message(message):
     chat_id = message.chat.id
+
     categories = api.get_categories()
-    bot.send_message(chat_id=chat_id, text="Привет! Я Ваш личный бот помощник🦾\n Выбирайте категории вопросов, которые Вас интересуют,\n там Вы найдете ответы на большинство вопросов по выбранной теме🥳\n Если Вы не нашли интересующий Вас вопрос😰, свяжитесь с Call-центром🙄",
+
+    bot.send_message(chat_id=chat_id,
+                     text="Привет! " + start_text)
+    bot.send_message(chat_id=chat_id, text='Выберите категорию',
                      reply_markup=cb.make_inline_keyboard_categories(categories=categories))
 
 
 # Команда /help
 @bot.message_handler(commands=['help'])
-def start_message(message):
+def help_message(message):
     chat_id = message.chat.id
-    bot.send_message(chat_id=chat_id, text="Привет! Я Ваш личный бот помощник🦾\n Выбирайте категории вопросов, которые Вас интересуют,\n там Вы найдете ответы на большинство вопросов по выбранной теме🥳\n Если Вы не нашли интересующий Вас вопрос😰, свяжитесь с Call-центром🙄")
+
+    categories = api.get_categories()
+
+    bot.send_message(chat_id=chat_id,
+                     text=start_text)
+    bot.send_message(chat_id=chat_id, text='Выберите категорию',
+                     reply_markup=cb.make_inline_keyboard_categories(categories=categories))
 
 
 # ==================== Обработка Inline кнопок ==================== #
