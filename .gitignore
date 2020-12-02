@@ -56,6 +56,10 @@ coverage.xml
 *.log
 local_settings.py
 
+!backend/question_manager/migrations
+backend/question_manager/migrations/*
+!backend/question_manager/migrations/__init__.py
+
 # Flask stuff:
 instance/
 .webassets-cache
@@ -82,7 +86,9 @@ celerybeat-schedule
 *.sage.py
 
 # dotenv
-En_group_bot/.env
+.env
+*.env
+*set_env.bat
 
 # virtualenv
 .venv
@@ -108,3 +114,4 @@ media/
 *.pyc
 *.db
 *.pid
+.env
